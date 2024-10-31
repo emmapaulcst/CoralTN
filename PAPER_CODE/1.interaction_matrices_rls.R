@@ -8,7 +8,7 @@ library(beepr)
 #### DATA ####
 
 ## fish
-fish <- read_csv("PAPER_DATA/original_data/rls_fish_flux.csv")
+fish <- read_csv("data/rls_fish_flux.csv")
 
 # Select randomly one transect per site
 transect <- fish %>% group_by(SiteCode, SurveyID) %>% summarise() %>% arrange(SiteCode, SurveyID)
@@ -28,7 +28,7 @@ site <- fish %>%
 s <- nrow(site)
 
 ## mat int 
-mat_int <- read_csv("PAPER_DATA/original_data/interaction_matrix.csv")
+mat_int <- read_csv("data/interaction_matrix.csv")
 
 #### INTERACTION MATRICES ####
 

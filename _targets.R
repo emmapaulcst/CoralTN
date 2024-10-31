@@ -47,7 +47,11 @@ tar_option_set(
 
 # Run the R scripts in the R/ folder with your custom functions:
 # tar_source()
+tar_source("R/functions_mat_int.R")
 tar_source("R/functions_topo.R")
+# tar_source("R/allDuplicated.R")
+# tar_source("R/modularity_beckett.R")
+
 # tar_source("other_functions.R") # Source other scripts as needed.
 
 # Replace the target list below with your own:
@@ -64,8 +68,35 @@ tar_source("R/functions_topo.R")
 # )
 
 list(
-  tar_target(path_to_mat_int, "data/list_mat_int_Ic.rdata", format = "file"),
-  tar_target(mat_int, get_mat_int(path_to_mat_int)),
-  tar_target(topo, complexity_df(mat_int))
+  # Get global interaction matrix from ML
+  tar_target(path_to_global_mat_int, "data/interaction_matrix.csv", format = "file"),
+  tar_target(global_mat_int, get_global_mat_int(path_to_global_mat_int)),
+  
+  # Get reef fish visual censuses from RLS
+  tar_target(path_to_fish_rls, "data/rls_fish_flux.csv", format = "file"),
+  tar_target(fish_rls, get_fish_rls(path_to_fish_rls)),
+  
+  # Save selected SurveyID
+  tar_target(surveyID, get_surveyID(fish_rls)),
+  # Save site name
+  tar_target(site, get_site(fish_rls)),
+  # Save carbon fluxes 
+  tar_target(total_flux_per_sp_per_site, get_c_fluxes(fish_rls)),
+  
+  # Get all interaction matrices
+  tar_target(list_mat_int, gives_list_mat_int(site, fish_rls, global_mat_int)),
+  # Rmv empty columns in the matrices
+  tar_target(list_mat_int_rmv, gives_list_mat_int_rmv(site, list_mat_int)),
+  # Weight matrices with carbon fluxes
+  tar_target(list_mat_int_rmv_w, weight_matrices(site, list_mat_int_rmv, total_flux_per_sp_per_site)),
+  # Rmv empty columns to be sure
+  tar_target(list_mat_int_Ic, gives_list_mat_int_rmv(site, list_mat_int_rmv_w)),
+  
+  # Assess topology
+  # tar_target(path_to_mat_int, "data/list_mat_int_Ic.rdata", format = "file"),
+  # tar_target(mat_int, get_mat_int(path_to_mat_int)),
+  tar_target(topology, get_all_topo(list_mat_int_Ic))
 )
+
+
 

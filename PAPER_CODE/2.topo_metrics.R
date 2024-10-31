@@ -144,24 +144,24 @@ nestedness <- function(tibble){
 
 # MODULARITY #
 
-get_Beckett_Q <- function(tibble){
-  pred <- as.matrix(tibble[1])
-  tibble <- tibble[c(-1)]
-  
-  tibble <- tibble %>% 
-    mutate(across(colnames(tibble[1]):colnames(tibble[ncol(tibble)]), 
-                  ~ case_when(is.na(.) == T ~ 0, TRUE ~ .)))
-  
-  tibble <- as.matrix(tibble)
-  row.names(tibble) <- pred
-  
-  MOD1 = DIRT_LPA_wb_plus(tibble)
-  mod_info <- GetModularInformation(tibble, MOD1)
-  
-  Qb <- c(mod_info$modularity, mod_info$normalised_modularity, mod_info$number_of_modules)
-  
-  return(Qb)
-}
+# get_Beckett_Q <- function(tibble){
+#   pred <- as.matrix(tibble[1])
+#   tibble <- tibble[c(-1)]
+#   
+#   tibble <- tibble %>% 
+#     mutate(across(colnames(tibble[1]):colnames(tibble[ncol(tibble)]), 
+#                   ~ case_when(is.na(.) == T ~ 0, TRUE ~ .)))
+#   
+#   tibble <- as.matrix(tibble)
+#   row.names(tibble) <- pred
+#   
+#   MOD1 = DIRT_LPA_wb_plus(tibble)
+#   mod_info <- GetModularInformation(tibble, MOD1)
+#   
+#   Qb <- c(mod_info$modularity, mod_info$normalised_modularity, mod_info$number_of_modules)
+#   
+#   return(Qb)
+# }
 
 get_Newman_Q <- function(tibble){
   pred <- as.matrix(tibble[1])
@@ -191,9 +191,9 @@ network_topo <- function(tibble){
     gen_vul <- get_in_out_degree(tibble)
     Cc <- centralities(tibble)
     N <- nestedness(tibble)
-    Qb <- get_Beckett_Q(tibble)
+    #Qb <- get_Beckett_Q(tibble)
     Qn <- get_Newman_Q(tibble)
-    topo <- c(complexity, gen_vul, Cc, N, Qb, Qn)
+    topo <- c(complexity, gen_vul, Cc, N, Qn)
   }
   return(topo)
 }
@@ -211,7 +211,8 @@ topo_df <- topo_df %>%
          G = X7, sG = X8, V = X9, sV = X10, 
          Cc = X11, nCc = X12, Bc = X13, nBc = X14,
          NODF2 = X15, weighted_NODF = X16, 
-         Qb = X17, norm_Qb = X18, nb_of_modules = X19, Qn = X20) %>% 
+         #Qb = X17, norm_Qb = X18, nb_of_modules = X19, 
+         Qn = X17) %>% 
   select(SiteCode, S:Qn) %>% 
   arrange(SiteCode)
 
