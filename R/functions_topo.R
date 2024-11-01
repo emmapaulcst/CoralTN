@@ -172,7 +172,7 @@ get_network_topo <- function(tibble){
 }
 
 #### PARALLEL ####
-get_all_topo <- function(list_mat_int){
+get_all_topo <- function(list_mat_int, surveyID){
   topo_list <- mclapply(list_mat_int[1:562], get_network_topo, mc.cores = 52)
   site <- names(topo_list)
 
@@ -190,5 +190,7 @@ get_all_topo <- function(list_mat_int){
     select(SiteCode, S:Qn) %>%
     arrange(SiteCode)
 
+  topo_df <- left_join(surveyID, topo_df, by = "SiteCode")
+  
   return(topo_df)
 }

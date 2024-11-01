@@ -9,65 +9,24 @@ library(targets)
 
 # Set target options:
 tar_option_set(
-  packages = c("readr", "dplyr", "tidyr", "ggplot2", "rlist", "parallel", "vegan", "bipartite")
-  # Packages that your targets need for their tasks.
-  # format = "qs", # Optionally set the default storage format. qs is fast.
-  #
-  # Pipelines that take a long time to run may benefit from
-  # optional distributed computing. To use this capability
-  # in tar_make(), supply a {crew} controller
-  # as discussed at https://books.ropensci.org/targets/crew.html.
-  # Choose a controller that suits your needs. For example, the following
-  # sets a controller that scales up to a maximum of two workers
-  # which run as local R processes. Each worker launches when there is work
-  # to do and exits if 60 seconds pass with no tasks to run.
-  #
-  #   controller = crew::crew_controller_local(workers = 2, seconds_idle = 60)
-  #
-  # Alternatively, if you want workers to run on a high-performance computing
-  # cluster, select a controller from the {crew.cluster} package.
-  # For the cloud, see plugin packages like {crew.aws.batch}.
-  # The following example is a controller for Sun Grid Engine (SGE).
-  # 
-  #   controller = crew.cluster::crew_controller_sge(
-  #     # Number of workers that the pipeline can scale up to:
-  #     workers = 10,
-  #     # It is recommended to set an idle time so workers can shut themselves
-  #     # down if they are not running tasks.
-  #     seconds_idle = 120,
-  #     # Many clusters install R as an environment module, and you can load it
-  #     # with the script_lines argument. To select a specific verison of R,
-  #     # you may need to include a version string, e.g. "module load R/4.3.2".
-  #     # Check with your system administrator if you are unsure.
-  #     script_lines = "module load R"
-  #   )
-  #
-  # Set other options as needed.
-)
+  packages = c("readr", "dplyr", "tidyr", "ggplot2", "rlist", "parallel", "vegan", "bipartite",
+               "purrr", "tibble", "brms", "ggpubr", "scales", "loo", "DiagrammeR", "rstantools",
+               "grid", "Rcpp", "gridExtra"))
 
 # Run the R scripts in the R/ folder with your custom functions:
 # tar_source()
 tar_source("R/functions_mat_int.R")
 tar_source("R/functions_topo.R")
+tar_source("R/functions_bga.R")
+tar_source("R/functions_flux_per_cat.R")
+tar_source("R/functions_sem.R")
+tar_source("R/functions_makeFigs.R")
+
 # tar_source("R/allDuplicated.R")
 # tar_source("R/modularity_beckett.R")
 
-# tar_source("other_functions.R") # Source other scripts as needed.
-
-# Replace the target list below with your own:
-# list(
-#   tar_target(file1, "data/raw_data.csv", format = "file"),
-#   tar_target(data1, get_data1(file1)),
-#   tar_target(model1, fit_model1(data1)),
-#   tar_target(plot1, plot_model1(data1, model1)),
-# 
-#   tar_target(file2, "data/bga.csv", format = "file"),
-#   tar_target(data2, get_data2(file2)),
-#   tar_target(model2, fit_model2(data2)),
-#   tar_target(plot2, plot_model2(data2, model2))
-# )
-
 list(
+  #### BUILD INT MATRICES ####
   # Get global interaction matrix from ML
   tar_target(path_to_global_mat_int, "data/interaction_matrix.csv", format = "file"),
   tar_target(global_mat_int, get_global_mat_int(path_to_global_mat_int)),
@@ -92,10 +51,60 @@ list(
   # Rmv empty columns to be sure
   tar_target(list_mat_int_Ic, gives_list_mat_int_rmv(site, list_mat_int_rmv_w)),
   
-  # Assess topology
+  #### ASSESS TOPOLOGY ####
   # tar_target(path_to_mat_int, "data/list_mat_int_Ic.rdata", format = "file"),
   # tar_target(mat_int, get_mat_int(path_to_mat_int)),
-  tar_target(topology, get_all_topo(list_mat_int_Ic))
+  tar_target(topology, get_all_topo(list_mat_int_Ic, surveyID)),
+  
+  #### BUILD BGA DATASET ####
+  # Get benthos data
+  tar_target(path_to_benthos, "data/rls_benthos.csv", format = "file"),
+  tar_target(benthos, get_benthos(path_to_benthos, surveyID)),
+  
+  # Get predictors data
+  tar_target(path_to_predictors, "data/rls_predictors.csv", format = "file"),
+  tar_target(predictors, get_predictors(path_to_predictors, surveyID)),
+  
+  # Gives bga dataset
+  tar_target(bga, gives_bga_dataset(topology, benthos, predictors)),
+  
+  #### CARBON FLUXES ####
+  # Get prey categories
+  tar_target(path_to_prey_cat, "data/prey_categories.csv", format = "file"),
+  tar_target(prey_cat, get_prey_cat(path_to_prey_cat)),
+  
+  # Gives carbon fluxes per categories
+  tar_target(flux_per_prey_Ic, gives_flux_per_cat(prey_cat, list_mat_int)),
+  # More info on carbon fluxes
+  # tar_target(info_on_fluxes, get_info_on_fluxes(flux_per_prey_Ic))
+  
+  #### SEM ####
+  tar_target(data_sem, gives_data_SEM(bga, flux_per_prey_Ic)),
+  tar_target(fit_sem, make_SEM(data_sem)),
+  
+  #### MAKE FIGS ####
+  ##### Fig1 ####
+  tar_target(Fig1_data, makeFig1_data()),
+  tar_target(Fig1_graphA, makeGraph(Fig1_data[['graphA']])),
+  tar_target(Fig1_graphB, makeGraph(Fig1_data[['graphB']])),
+  tar_target(Fig1_graphC, makeGraph(Fig1_data[['graphC']])),
+  tar_target(Fig1_graphD, makeGraph(Fig1_data[['graphD']])),
+  tar_target(Fig1_graphE, makeGraph(Fig1_data[['graphE']])),
+  
+  ##### Fig2 ####
+  tar_target(Fig2, makeFig2(bga)),
+  tar_target(Fig2_data, makeFig2_data()),
+  tar_target(Fig2_graphS, makeGraph(Fig2_data[['graphDiverse']])),
+  tar_target(Fig2_graphC, makeGraph(Fig2_data[['graphConnected']])),
+  tar_target(Fig2_graphQ, makeGraph(Fig2_data[['graphModular']])),
+  
+  ##### Fig3 ####
+  tar_target(Fig3, makeFig3(bga, flux_per_prey_Ic)),
+  
+  ##### Fig 4 ####
+  tar_target(Fig4_sem, makeFig4_SEM(fit_sem)),
+  tar_target(Fig4_ce_data, makeFig4_CE_data(fit_sem)),
+  tar_target(Fig4_ce, makeFig4_CE(Fig4_ce_data)) #use this to plot : grid.draw(tar_read(Fig4_ce))
 )
 
 
