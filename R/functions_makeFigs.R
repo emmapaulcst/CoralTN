@@ -1,47 +1,48 @@
 #### LIBRARIES ####
 
-library(readr)
-library(dplyr)
-library(ggplot2)
-library(magick)
-library(viridis)
-library(brms)
-
-library(tidyr)
-library(purrr)
-library(vegan)
-library(bipartite)
-library(patchwork)
-library(rlist)
-library(network)
-library(sna)
-library(ergm)
-library(DiagrammeR)
-library(rsvg)
-library(cowplot)
-library(FactoMineR)
-library(Factoshiny)
-
-library(rworldmap)
-library(ggrepel)
-
-library(ggfortify)
-library(ggConvexHull)
-library(ggpubr)
-library(ggcorrplot)
-library(corrplot)
-library(ggpmisc)
-library(GGally)
-library(ggbreak) 
-library(scales)
-
-library(DiagrammeRsvg)
-library(htmltools)
-library(svglite)
-
-library(grid)
-
-library(khroma)
+# library(readr)
+# library(dplyr)
+# library(ggplot2)
+# library(magick)
+# library(viridis)
+# library(brms)
+# 
+# library(tidyr)
+# library(purrr)
+# library(vegan)
+# library(bipartite)
+# library(patchwork)
+# library(rlist)
+# library(network)
+# library(sna)
+# library(ergm)
+# library(DiagrammeR)
+# library(rsvg)
+# library(cowplot)
+# library(FactoMineR)
+# library(Factoshiny)
+# 
+# library(rworldmap)
+# library(ggrepel)
+# 
+# library(ggfortify)
+# library(ggConvexHull)
+# library(ggpubr)
+# library(ggcorrplot)
+# library(corrplot)
+# library(ggpmisc)
+# library(GGally)
+# library(ggbreak)
+# library(scales)
+# 
+# library(DiagrammeRsvg)
+# library(htmltools)
+# library(svglite)
+# 
+# library(grid)
+# 
+# library(khroma)
+# library(rstan)
 
 
 #### common functions ####
