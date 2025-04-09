@@ -476,46 +476,105 @@ makeFig3 <- function(bga, flux_per_prey_Ic){
 
 makeFig4_SEM <- function(fit_sem){
   
-  fe <- brms::fixef(fit_sem) %>%
+  ##### Fe ####
+  
+  fe <- brms::fixef(fit_sem) %>% # mettre cette partie dans un .csv plutôt
     as.data.frame() %>%
     tibble::rownames_to_column("name") %>%
     tidyr::separate(name, into = c("dep", "var"), sep = "_") %>%
-    filter(var != "Intercept") %>%
-    mutate(dep = case_when(
-      dep == "coral" ~ "Coral",
-      dep == "algae" ~ "Algae",
-      dep == "turf" ~ "Turf",
-      dep == "mobInv" ~ "mInv",
-      dep == "sessbInv" ~ "sInv",
-      TRUE ~ dep)) %>%
-    mutate(var = case_when(
-      var == "algae" ~ "Algae",
+    dplyr::filter(var != "Intercept") %>% 
+    # mutate(dep = case_when(
+    #   dep == "coral" ~ "Coral",
+    #   dep == "algae" ~ "Algae",
+    #   dep == "turf" ~ "Turf",
+    #   dep == "mobInv" ~ "mInv",
+    #   dep == "sessbInv" ~ "sInv",
+    #   TRUE ~ dep)) %>%
+    # mutate(var = case_when(
+    #   var == "algae" ~ "Algae",
+    #   var == "coral" ~ "Coral",
+    #   var == "gravity" ~ "Grav.",
+  #   var == "sst" ~ "SST",
+  #   var == "turf" ~ "Turf",
+  #   var == "npp" ~ "NPP",
+  #   var == "dhw" ~ "DHW",
+  #   TRUE ~ var))
+  dplyr::mutate(dep = case_when(
+    dep == "coral" ~ "Coral",
+    dep == "algae" ~ "Algae",
+    dep == "turf" ~ "Turf",
+    dep == "S" ~ "Node number",
+    dep == "C" ~ "Connectance",
+    dep == "Qn" ~ "Modularity",
+    dep == "N" ~ "Nestedness",
+    dep == "mInv" ~ "Mobile invertebrates",
+    dep == "sInv" ~ "Sessile invertebrates",
+    dep == "bAut" ~ "Benthic autotrophs",
+    dep == "det" ~ "Detritus",
+    dep == "fish" ~ "Fish",
+    dep == "zooP" ~ "Zooplankton",
+    TRUE ~ dep)) %>% 
+    dplyr::mutate(var = case_when(
       var == "coral" ~ "Coral",
-      var == "gravity" ~ "Grav.",
-      var == "sst" ~ "SST",
+      var == "algae" ~ "Algae",
       var == "turf" ~ "Turf",
-      var == "npp" ~ "NPP",
-      var == "dhw" ~ "DHW",
-      TRUE ~ var))
+      var == "gravity" ~ "Gravity",
+      var == "sst" ~ "Sea Surface Temperature",
+      var == "npp" ~ "Net Primary Production",
+      var == "dhw" ~ "Degree Heating Weeks",
+      var == "S" ~ "Node number",
+      var == "C" ~ "Connectance",
+      var == "Qn" ~ "Modularity",
+      var == "N" ~ "Nestedness",
+      TRUE ~ var)) 
   
-  fe$dep <- factor(fe$dep, levels = c("S", "C", "N", "Qn", 
-                                      "bAut", "det", "fish", "mInv", "sInv", "zooP",
+  # fe$dep <- factor(fe$dep, levels = c("S", "C", "Cc", "nCc", "Bc", "nBc", "N", "Qn", 
+  #                                     "bAut", "det", "fish", "mInv", "sInv", "zooP",
+  #                                     "Coral", "Algae", "Turf")) 
+  # fe$var <- factor(fe$var, levels = c("S", "C", "Cc", "nCc", "Bc", "nBc", "N", "Qn", 
+  #                                     "Grav.", "NPP", "SST", "Turf", "Algae", "Coral",
+  #                                     "DHW"))
+  
+  fe$dep <- factor(fe$dep, levels = c("Node number", "Connectance",  "Nestedness", "Modularity", 
+                                      "Benthic autotrophs", "Detritus", "Fish", "Mobile invertebrates", "Sessile invertebrates", "Zooplankton",
                                       "Coral", "Algae", "Turf")) 
-  fe$var <- factor(fe$var, levels = c("S", "C", "N", "Qn", 
-                                      "Grav.", "NPP", "SST", "Turf", "Algae", "Coral",
-                                      "DHW"))
+  fe$var <- factor(fe$var, levels = c("Node number", "Connectance", "Nestedness", "Modularity", 
+                                      "Gravity", "Net Primary Production", "Sea Surface Temperature", "Degree Heating Weeks",
+                                      "Turf", "Algae", "Coral"))
+  
+  ##### Nodes ####
+  
+  # node <- rbind(fe %>% select(var) %>% rename(label = var), 
+  #               fe %>% select(dep) %>% rename(label = dep)) %>% 
+  #   group_by(label) %>% summarise() %>%
+  #   mutate(type = case_when(
+  #     label == "DHW" | label == "SST" | label == "NPP" | label == "Grav." ~ 1,
+  #     label == "Coral" | label == "Algae" | label == "Turf" ~ 2,
+  #     label == "S" | label == "C" | label == "N" | label == "Qn" ~ 3,
+  #     label == "bAut" | label == "det" | label == "fish" | label == "mInv" | label == "sInv" | label == "zooP" ~ 4)) %>%
+  #   arrange(type) %>% 
+  #   mutate(id = seq(1:17)) %>% #1:18
+  #   select(id, label)
   
   node <- rbind(fe %>% select(var) %>% rename(label = var), 
                 fe %>% select(dep) %>% rename(label = dep)) %>% 
     group_by(label) %>% summarise() %>%
     mutate(type = case_when(
-      label == "DHW" | label == "SST" | label == "NPP" | label == "Grav." ~ 1,
+      label == "Degree Heating Weeks" | label == "Sea Surface Temperature" | label == "Net Primary Production" | label == "Gravity" ~ 1,
       label == "Coral" | label == "Algae" | label == "Turf" ~ 2,
-      label == "S" | label == "C" | label == "N" | label == "Qn" ~ 3,
-      label == "bAut" | label == "det" | label == "fish" | label == "mInv" | label == "sInv" | label == "zooP" ~ 4)) %>%
+      label == "Node number" | label == "Connectance" | label == "Nestedness" | label == "Modularity" ~ 3,
+      label == "Benthic autotrophs" | label == "Detritus" | label == "Fish" | 
+        label == "Mobile invertebrates" | label == "Sessile invertebrates" | label == "Zooplankton" ~ 4)) %>%
     arrange(type) %>% 
-    mutate(id = seq(1:17)) %>%
+    mutate(id = seq(1:17)) %>% #1:18
     select(id, label)
+  
+  #Prepare label sizes
+  node_labels <- as.vector(node$label)
+  node_widths <- nchar(node_labels) * 0.1
+  node_heights <- rep(0.5, length(node_labels)) 
+  
+  ##### Edges ####
   
   edge <- fe %>%
     mutate(influence = case_when(
@@ -531,6 +590,7 @@ makeFig4_SEM <- function(fit_sem){
   edge <- left_join(edge, node, by = c("to" = "label"))
   edge <- edge %>% rename(to_label = to, to = id)
   
+  ##### Graph ####
   graphSEM <- create_graph() %>%
     
     add_nodes_from_table(
@@ -540,6 +600,12 @@ makeFig4_SEM <- function(fit_sem){
     set_node_attrs(
       node_attr = fontcolor,
       values = "white") %>% 
+    set_node_attrs(
+      node_attr = width,
+      values = node_widths) %>% 
+    set_node_attrs(
+      node_attr = shape,
+      values = "rectangle") %>% 
     
     # node color
     # environmental + human pressures
@@ -635,6 +701,7 @@ makeFig4_SEM <- function(fit_sem){
   
   # global attributes
   graphSEM <- graphSEM %>% 
+    add_global_graph_attrs(attr = "bgcolor", value = "transparent", attr_type = "graph") %>% 
     add_global_graph_attrs(attr = "width", value = 0.4, attr_type = "node") %>% 
     add_global_graph_attrs(attr = "fontsize", value = 9, attr_type = "node") %>% 
     add_global_graph_attrs(attr = c("layout", "rankdir", "splines"),
@@ -767,7 +834,7 @@ makeFig4_CE <- function(Fig4_CE_data){
   
   # Return the combined grob object
   return(CE)
-
+  
 }
 
 

@@ -11,7 +11,7 @@ library(targets)
 tar_option_set(
   packages = c("readr", "dplyr", "tidyr", "ggplot2", "rlist", "parallel", "vegan", "bipartite",
                "purrr", "tibble", "brms", "ggpubr", "scales", "loo", "DiagrammeR", "rstantools",
-               "grid", "Rcpp", "gridExtra"))
+               "grid", "Rcpp", "gridExtra", "cmdstanr", "magick", "ggfortify"))
 
 # Run the R scripts in the R/ folder with your custom functions:
 # tar_source()
@@ -34,6 +34,10 @@ list(
 
   # Get reef fish visual censuses from RLS
   tar_target(path_to_fish_rls, "data/rls_fish_flux.csv", format = "file"),
+  
+  # Old fish
+  # tar_target(path_to_fish_rls, "find_bug/rls_fish_99_flux_turf_no_duplicate.csv", format = "file"),
+  
   tar_target(fish_rls, get_fish_rls(path_to_fish_rls)),
 
   # Save selected SurveyID
@@ -52,10 +56,20 @@ list(
   # Rmv empty columns to be sure
   tar_target(list_mat_int_Ic, gives_list_mat_int_rmv(site, list_mat_int_rmv_w)),
 
+  # Old list mat int
+  # tar_target(path_to_old_list_mat_int, "find_bug/list_mat_int_cut-off_rescaled_turf_Ic.rdata", format = "file"),
+  # tar_target(list_mat_int_Ic, get_old_list_mat_int(path_to_old_list_mat_int)),
+  
   #### ASSESS TOPOLOGY ####
   # tar_target(path_to_mat_int, "data/list_mat_int_Ic.rdata", format = "file"),
   # tar_target(mat_int, get_mat_int(path_to_mat_int)),
+
+  # NEVER EVER EVEEEER SUPRESS TOPOLOGY #
   tar_target(topology, get_all_topo(list_mat_int_Ic, surveyID)),
+
+  # Old topo
+  # tar_target(path_to_topo, "find_bug/archi_Ic_cut-off_rescaled_turf_Cc_bis.csv", format = "file"),
+  # tar_target(topology, get_old_topo(path_to_topo)),
 
   #### BUILD BGA DATASET ####
   # Get benthos data
@@ -75,37 +89,47 @@ list(
   tar_target(prey_cat, get_prey_cat(path_to_prey_cat)),
 
   # Gives carbon fluxes per categories
-  tar_target(flux_per_prey_Ic, gives_flux_per_cat(prey_cat, list_mat_int))
+  tar_target(flux_per_prey_Ic, gives_flux_per_cat(prey_cat, list_mat_int_Ic)),
   # More info on carbon fluxes
   # tar_target(info_on_fluxes, get_info_on_fluxes(flux_per_prey_Ic))
 
-  # #### SEM ####
-  # tar_target(data_sem, gives_data_SEM(bga, flux_per_prey_Ic)),
-  # tar_target(fit_sem, make_SEM(data_sem)),
-  # 
-  # #### MAKE FIGS ####
-  # ##### Fig1 ####
-  # tar_target(Fig1_data, makeFig1_data()),
-  # tar_target(Fig1_graphA, makeGraph(Fig1_data[['graphA']])),
-  # tar_target(Fig1_graphB, makeGraph(Fig1_data[['graphB']])),
-  # tar_target(Fig1_graphC, makeGraph(Fig1_data[['graphC']])),
-  # tar_target(Fig1_graphD, makeGraph(Fig1_data[['graphD']])),
-  # tar_target(Fig1_graphE, makeGraph(Fig1_data[['graphE']])),
-  # 
-  # ##### Fig2 ####
-  # tar_target(Fig2, makeFig2(bga)),
-  # tar_target(Fig2_data, makeFig2_data()),
-  # tar_target(Fig2_graphS, makeGraph(Fig2_data[['graphDiverse']])),
-  # tar_target(Fig2_graphC, makeGraph(Fig2_data[['graphConnected']])),
-  # tar_target(Fig2_graphQ, makeGraph(Fig2_data[['graphModular']])),
-  # 
-  # ##### Fig3 ####
-  # tar_target(Fig3, makeFig3(bga, flux_per_prey_Ic)),
-  # 
-  # ##### Fig 4 ####
-  # tar_target(Fig4_sem, makeFig4_SEM(fit_sem)),
-  # tar_target(Fig4_ce_data, makeFig4_CE_data(fit_sem)),
-  # tar_target(Fig4_ce, makeFig4_CE(Fig4_ce_data)) #use this to plot : grid.draw(tar_read(Fig4_ce))
+  #### SEM ####
+  tar_target(data_sem, gives_data_SEM(bga, flux_per_prey_Ic)),
+
+  # Old data for sem
+  # tar_target(path_to_data, "find_bug/data.csv", format = "file"),
+  # tar_target(data, get_data(path_to_data)),
+
+  tar_target(fit_sem, make_SEM(data_sem)),
+  tar_target(fit_sem_5000, make_SEM_5000(data_sem)),
+
+  #### MAKE FIGS ####
+  ##### Fig1 ####
+  tar_target(Fig1_data, makeFig1_data()),
+  tar_target(Fig1_graphA, makeGraph(Fig1_data[['graphA']])),
+  tar_target(Fig1_graphB, makeGraph(Fig1_data[['graphB']])),
+  tar_target(Fig1_graphC, makeGraph(Fig1_data[['graphC']])),
+  tar_target(Fig1_graphD, makeGraph(Fig1_data[['graphD']])),
+  tar_target(Fig1_graphE, makeGraph(Fig1_data[['graphE']])),
+
+  ##### Fig2 ####
+  tar_target(Fig2, makeFig2(bga)),
+  tar_target(Fig2_data, makeFig2_data()),
+  tar_target(Fig2_graphS, makeGraph(Fig2_data[['graphDiverse']])),
+  tar_target(Fig2_graphC, makeGraph(Fig2_data[['graphConnected']])),
+  tar_target(Fig2_graphQ, makeGraph(Fig2_data[['graphModular']])),
+
+  ##### Fig3 ####
+  tar_target(Fig3, makeFig3(bga, flux_per_prey_Ic)),
+
+  #### Fig 4 ####
+  tar_target(Fig4_sem, makeFig4_SEM(fit_sem)),
+  tar_target(Fig4_ce_data, makeFig4_CE_data(fit_sem)),
+  tar_target(Fig4_ce, makeFig4_CE(Fig4_ce_data)), #use this to plot : grid.draw(tar_read(Fig4_ce))
+  
+  tar_target(Fig4_sem_5000, makeFig4_SEM(fit_sem_5000)),
+  tar_target(Fig4_ce_data_5000, makeFig4_CE_data(fit_sem_5000)),
+  tar_target(Fig4_ce_5000, makeFig4_CE(Fig4_ce_data_5000)) #use this to plot : grid.draw(tar_read(Fig4_ce))
 )
 
 

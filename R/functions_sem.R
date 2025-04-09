@@ -148,6 +148,51 @@ make_SEM <- function(data_sem){
       coral + algae + turf,
     data = data_sem,
     prior = semPriors,
+    chains = 4, cores = 4, iter = 2000, warmup = 1000,
+    backend = "cmdstanr",
+    threads = 12)
+  
+  return(fit_sem)
+}
+
+make_SEM_5000 <- function(data_sem){
+  #### SEM ####
+  
+  ##### benthos | layer 2 ####
+  
+  coral <- bf(coral ~ 1 + npp + gravity + dhw + (1|Realm), family = Beta) 
+  algae <- bf(algae ~ 1 + npp + gravity + dhw + (1|Realm), family = Beta) 
+  turf <- bf(turf ~ 1 + npp + gravity + dhw + (1|Realm), family = Beta)
+  
+  ##### topo | layer 3 ####
+  
+  s <- bf(S ~ 1 + coral + algae + turf + npp + gravity + sst + (1|Realm))
+  c <- bf(C ~ 1 + coral + algae + turf + npp + gravity + sst + (1|Realm))
+  n <- bf(N ~ 1 + coral + algae + turf + npp + gravity + sst + (1|Realm))
+  q <- bf(Qn ~ 1 + coral + algae + turf + npp + gravity + sst + (1|Realm))
+  
+  ##### fluxes | layer 4 ####
+  
+  bAut <- bf(bAut ~ 1 + algae + turf + gravity + S + C + N + Qn + (1|Realm), family = Beta)
+  det <- bf(det ~ 1 + algae + turf + gravity + npp + S + C + N + Qn + (1|Realm), family = Beta)
+  fish <- bf(fish ~ 1 + coral + gravity + S + C + N + Qn + (1|Realm), family = Beta)
+  mInv <- bf(mInv ~ 1 + coral + algae + turf + gravity + S + C  + N + Qn + (1|Realm), family = Beta)
+  sInv <- bf(sInv ~ 1 + coral + algae + turf + gravity + S + C + N + Qn + (1|Realm), family = Beta)
+  zooP <- bf(zooP ~ 1 + coral + npp + gravity + S + C + N + Qn + (1|Realm), family = Beta)
+  
+  semPriors <- get_prior(data = data_sem,
+                         bAut + det + fish + mInv + sInv + zooP +
+                           s + c + n + q +
+                           coral + algae + turf) %>%
+    mutate(prior = case_when(class == as.character("b") & coef != "" ~ "normal(0, 1)",
+                             TRUE ~ prior))
+  
+  fit_sem <- brm(
+    bAut + det + fish + mInv + sInv + zooP +
+      s + c + n + q +
+      coral + algae + turf,
+    data = data_sem,
+    prior = semPriors,
     chains = 4, cores = 4, iter = 5000, warmup = 2500,
     backend = "cmdstanr",
     threads = 12)
