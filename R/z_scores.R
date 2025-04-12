@@ -31,7 +31,9 @@ make_binary_mats <- function(list_mat_int_Ic){
   return(list_mat_int_b)
 }
 
-list_mat_int_b <- make_binary_mats(list_mat_int_Ic)
+load("PAPER_DATA/z_scores/list_mat_int_b.rdata")
+# list_mat_int_b <- make_binary_mats(list_mat_int_Ic)
+# save(list = "list_mat_int_b", file = 'PAPER_DATA/z_scores/list_mat_int_b.rdata')
 
 #### Null models #### 
 
@@ -55,7 +57,7 @@ get_list_null_models <- function(list_mat_int_b){
 }
 
 # load("PAPER_DATA/z_scores/list_null_mats.rdata")
-list_null_mats <- get_list_null_models(list_mat_int_b)
+# list_null_mats <- get_list_null_models(list_mat_int_b)
 # save(list = "list_null_mats", file = 'PAPER_DATA/z_scores/list_null_mats.rdata')
 
 
@@ -89,7 +91,10 @@ get_Qn_z_score <- function(mat_int_b, null_mats){
   return(z_score)
 }
 
-get_Qn_z_scores <- function(n_sites, list_mat_int_b, list_null_mats){
+get_Qn_z_scores <- function(start, end, list_mat_int_b, list_null_mats){
+  
+  # start <- 1
+  # end <- 10
   
   sites <- names(list_mat_int_b) %>% 
     as.data.frame() %>% 
@@ -106,20 +111,37 @@ get_Qn_z_scores <- function(n_sites, list_mat_int_b, list_null_mats){
   
   z_scores <- vector()
   
-  for (i in 1:n_sites){
+  for (i in start:end){
     z_score <- get_Qn_z_score(list_mat_int_b[[i]], list_null_mats[[i]])
     z_scores <- rbind(z_scores, z_score)
   }
   
-  z_Qns <- cbind(z_scores, sites %>% slice(1:n_sites))
+  z_Qns <- cbind(z_scores, sites %>% slice(start:end))
   
-  save(list = "z_Qns", file = 'PAPER_DATA/z_scores/z_Qns.rdata')
+  path_to_file <- paste("PAPER_DATA/z_scores/z_Qns/z_Qns_", end, ".rdata", sep = "")
+  save(list = "z_Qns", file = path_to_file)
   
   return(z_Qns)
 }
 
-z_Qn <- get_Qn_z_scores(n_sites = 5, list_mat_int_b, list_null_mats)
+# z_Qn <- get_Qn_z_scores(n_sites = 552, list_mat_int_b, list_null_mats)
+jump <- seq(from = 510, to = 550, by = 10)
 
+# for (i in jump){
+#   start <- i
+#   end <- i + 9
+#   
+#   z_Qn <- get_Qn_z_scores(start = start, end = end, list_mat_int_b, list_null_mats)
+# }
+
+z_Qn <- get_Qn_z_scores(start = 560, end = 562, list_mat_int_b, list_null_mats)
+
+
+# z_Qns_bind <- data.frame()
+z_Qns_bind <- rbind(z_Qns_bind, z_Qn)
+
+save(list = "z_Qns", 
+     file = "PAPER_DATA/z_scores/z_Qns/z_Qns.rdata")
 
 #### NODF ####
 
@@ -173,6 +195,6 @@ get_N_z_scores <- function(n_sites, list_mat_int_b, list_null_mats){
   return(z_Ns)
 }
 
-z_N <- get_N_z_scores(n_sites = 5, list_mat_int_b, list_null_mats)
+z_N <- get_N_z_scores(n_sites = 562, list_mat_int_b, list_null_mats)
 
 
