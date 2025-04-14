@@ -708,12 +708,14 @@ makeFig4_SEM <- function(fit_sem){
                            value = c("dot", "TD", "true"),
                            attr_type = c("graph", "graph", "graph"))
   
-  graphSEM <- render_graph(graphSEM,
+  final_graphSEM <- render_graph(graphSEM,
                            output = NULL,
                            as_svg = FALSE
   )
   
-  return(graphSEM)  
+  export_graph(graphSEM, height = 500, file_name = "PAPER_FIGS/script_output_figs/Fig4/graphSEM.png", file_type = "png") # ou svg
+  
+  return(final_graphSEM)  
 }
 
 makeFig4_CE_data <- function(fit_sem){

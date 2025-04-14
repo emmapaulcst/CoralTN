@@ -410,7 +410,7 @@ make_zFig4_SEM <- function(fit_sem){
 
   export_graph(graphSEM, height = 500, file_name = "PAPER_FIGS/script_output_figs/Fig4/graphSEM_z.png", file_type = "png") # ou svg
   
-  return(graphSEM)  
+  return(final_graphSEM)  
 }
 
 make_zFig4_CE_data <- function(fit_z_sem){
