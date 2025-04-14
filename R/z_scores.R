@@ -1,3 +1,7 @@
+# DO NOT RUN
+# RUNS ~ 1 OR 2 DAYS
+# NEEDS MEMORY AND CORES
+
 #### Libraries ####
 library(dplyr)
 library(bipartite)
@@ -125,7 +129,7 @@ get_Qn_z_scores <- function(start, end, list_mat_int_b, list_null_mats){
 }
 
 # z_Qn <- get_Qn_z_scores(n_sites = 552, list_mat_int_b, list_null_mats)
-jump <- seq(from = 510, to = 550, by = 10)
+# jump <- seq(from = 510, to = 550, by = 10)
 
 # for (i in jump){
 #   start <- i
@@ -134,7 +138,7 @@ jump <- seq(from = 510, to = 550, by = 10)
 #   z_Qn <- get_Qn_z_scores(start = start, end = end, list_mat_int_b, list_null_mats)
 # }
 
-z_Qn <- get_Qn_z_scores(start = 560, end = 562, list_mat_int_b, list_null_mats)
+# z_Qn <- get_Qn_z_scores(start = 560, end = 562, list_mat_int_b, list_null_mats)
 
 
 # z_Qns_bind <- data.frame()
@@ -195,6 +199,12 @@ get_N_z_scores <- function(n_sites, list_mat_int_b, list_null_mats){
   return(z_Ns)
 }
 
-z_N <- get_N_z_scores(n_sites = 562, list_mat_int_b, list_null_mats)
+# z_N <- get_N_z_scores(n_sites = 562, list_mat_int_b, list_null_mats)
 
+z_scores <- inner_join(z_Ns %>% rename(zN = N),
+                       z_Qns %>% rename(zQn = Qn), 
+                       by = "SiteCode") %>% 
+  select(SiteCode, zN, zQn)
+# save(list = "z_scores", file = 'PAPER_DATA/z_scores/z_scores.rdata')
+# write.csv(z_scores, 'PAPER_DATA/z_scores/z_scores.csv', row.names = F)
 

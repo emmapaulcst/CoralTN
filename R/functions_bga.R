@@ -23,9 +23,16 @@ get_predictors <- function(path_to_predictors, surveyID){
   return(predictors)
 }
 
+get_z_scores <- function(path_to_z_scores){
+  z_scores <- read_csv(path_to_z_scores)
+  # z_scores <- get(z_scores)
+  
+  return(z_scores)
+}
+
 #### ASSEMBLE ####
 
-gives_bga_dataset <- function(topology, benthos, predictors){
+gives_bga_dataset <- function(topology, z_scores, benthos, predictors){
   
   site_info <- predictors[1:12] %>%
     select(SiteCode, SiteLatitude:SiteLongitude, Country:Location, MPA)
@@ -41,6 +48,9 @@ gives_bga_dataset <- function(topology, benthos, predictors){
   bga <- list(topology, site_info, env, anthro, benthos) %>%
     purrr::reduce(inner_join, by = "SiteCode") %>% 
     filter(is.na(Branch_space) == F)
+  
+  bga <- left_join(bga, z_scores, by = "SiteCode") %>% 
+    select(SiteCode:Qn, zN, zQn, SiteLatitude:Substrate)
   
   return(bga)
   }
