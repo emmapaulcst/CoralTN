@@ -63,19 +63,22 @@ gives_zdata_SEM <- function(bga, flux_per_prey_Ic, z_scores){
       # archi
       S = (log(S+1) - mean(log(S+1))) / sd(log(S+1)),
       C = (log(C+1) - mean(log(C+1))) / sd(log(C+1)),
-      Cc = (log(Cc+1) - mean(log(Cc+1))) / sd(log(Cc+1)),
-      nCc = (log(nCc+1) - mean(log(nCc+1))) / sd(log(nCc+1)),
-      Bc = (log(Bc+1) - mean(log(Bc+1))) / sd(log(Bc+1)),
-      nBc = (log(nBc+1) - mean(log(nBc+1))) / sd(log(nBc+1)),
-      N = (log(N+1) - mean(log(N+1))) / sd(log(N+1)),
-      Qn = (log(Qn+1) - mean(log(Qn+1))) / sd(log(Qn+1)),
+      # Cc = (log(Cc+1) - mean(log(Cc+1))) / sd(log(Cc+1)),
+      # nCc = (log(nCc+1) - mean(log(nCc+1))) / sd(log(nCc+1)),
+      # Bc = (log(Bc+1) - mean(log(Bc+1))) / sd(log(Bc+1)),
+      # nBc = (log(nBc+1) - mean(log(nBc+1))) / sd(log(nBc+1)),
+      # N = (log(N+1) - mean(log(N+1))) / sd(log(N+1)),
+      # Qn = (log(Qn+1) - mean(log(Qn+1))) / sd(log(Qn+1)),
+      
+      # S = (S - mean(S)) / sd(S),
+      # C = (C - mean(C)) / sd(C),
       
       zN = ((zN) - mean(zN)) / sd(zN),
       zQn = ((zQn) - mean(zQn)) / sd(zQn),
       
-      L = (log(L+1) - mean(log(L+1))) / sd(log(L+1)),
-      G = (log(G+1) - mean(log(G+1))) / sd(log(G+1)),
-      V = (log(V+1) - mean(log(V+1))) / sd(log(V+1)),
+      # L = (log(L+1) - mean(log(L+1))) / sd(log(L+1)),
+      # G = (log(G+1) - mean(log(G+1))) / sd(log(G+1)),
+      # V = (log(V+1) - mean(log(V+1))) / sd(log(V+1)),
       
       # bga
       npp = (log(npp+1) - mean(log(npp+1))) / sd(log(npp+1)),

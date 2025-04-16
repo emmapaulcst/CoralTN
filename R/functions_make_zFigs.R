@@ -73,13 +73,17 @@ make_zFig2 <- function(bga){
   archi <- bga %>% 
     select(SiteCode, Region, Region_short, S, L, C, Bc, Od, Id, zN, zQn) %>% 
     mutate(S = (log(S+1) - mean(log(S+1))) / sd(log(S+1)),
-           L = (log(L+1) - mean(log(L+1))) / sd(log(L+1)),
-           C = (log(C+1) - mean(log(C+1))) / sd(log(C+1)),
-           Bc = (log(Bc+1) - mean(log(Bc+1))) / sd(log(Bc+1)),
-           Od = (log(Od+1) - mean(log(Od+1))) / sd(log(Od+1)),
-           Id = (log(Id+1) - mean(log(Id+1))) / sd(log(Id+1)),
-           zN = (zN - mean(zN)) / sd(zN),
-           zQn = (zQn - mean(zQn)) / sd(zQn)) %>% 
+      # L = (log(L+1) - mean(log(L+1))) / sd(log(L+1)),
+       C = (log(C+1) - mean(log(C+1))) / sd(log(C+1)),
+      # Bc = (log(Bc+1) - mean(log(Bc+1))) / sd(log(Bc+1)),
+      # Od = (log(Od+1) - mean(log(Od+1))) / sd(log(Od+1)),
+      # Id = (log(Id+1) - mean(log(Id+1))) / sd(log(Id+1)),
+      
+      # S = (S - mean(S)) / sd(S),
+      # C = (C - mean(C)) / sd(C),
+      
+      zN = (zN - mean(zN)) / sd(zN),
+      zQn = (zQn - mean(zQn)) / sd(zQn)) %>% 
     select(SiteCode, Region, Region_short, S, C, zN, zQn)
   
   #### pca ####
@@ -96,7 +100,6 @@ make_zFig2 <- function(bga){
         axis.text = element_text(size = 12),
         legend.position = "right") +
       scale_colour_manual(values = c("#66CCEE", "#228833", "#EE6677", "#CCBB44", "#4477AA")))
-  ggsave(file = "PAPER_FIGS/script_output_figs/Fig2/archi_z.png", dpi = 150, unit = "px", width=1500, height=1200)  #width=10, height=8
   
   #### boxplots ####
   # node number
@@ -129,7 +132,7 @@ make_zFig2 <- function(bga){
   
   # modularity
   boxQn <- ggplot() +
-    geom_boxplot(data = bga, aes(x = Region_short, y = Qn, colour = Region_short, fill = Region_short, alpha = 0.4)) +
+    geom_boxplot(data = bga, aes(x = Region_short, y = zQn, colour = Region_short, fill = Region_short, alpha = 0.4)) +
     labs(x = "") +
     scale_colour_manual(values = c("#66CCEE", "#228833", "#EE6677", "#CCBB44", "#4477AA")) +
     scale_fill_manual(values = c("#66CCEE", "#228833", "#EE6677", "#CCBB44", "#4477AA")) +
@@ -143,7 +146,7 @@ make_zFig2 <- function(bga){
   
   # nestedness
   boxN <- ggplot() +
-    geom_boxplot(data = bga, aes(x = Region_short, y = N, colour = Region_short, fill = Region_short, alpha = 0.4)) +
+    geom_boxplot(data = bga, aes(x = Region_short, y = zN, colour = Region_short, fill = Region_short, alpha = 0.4)) +
     labs(x = "") +
     scale_colour_manual(values = c("#66CCEE", "#228833", "#EE6677", "#CCBB44", "#4477AA")) +
     scale_fill_manual(values = c("#66CCEE", "#228833", "#EE6677", "#CCBB44", "#4477AA")) +
@@ -159,6 +162,7 @@ make_zFig2 <- function(bga){
   
   #### all #####
   Fig2 <- ggarrange(pca, box, nrow = 2, ncol = 1, heights = c(2,1), labels = c("1", ""))
+  ggsave(file = "PAPER_FIGS/script_output_figs/Fig2/archiAll_z.png", dpi = 150, unit = "px", width=1500, height=1200)  #width=10, height=8
   
   return(Fig2)
 }
@@ -403,11 +407,11 @@ make_zFig4_SEM <- function(fit_sem){
                            attr_type = c("graph", "graph", "graph"))
   
   final_graphSEM <- render_graph(graphSEM,
-                           output = NULL,
-                           as_svg = FALSE
+                                 output = NULL,
+                                 as_svg = FALSE
   )
   
-
+  
   export_graph(graphSEM, height = 500, file_name = "PAPER_FIGS/script_output_figs/Fig4/graphSEM_z.png", file_type = "png") # ou svg
   
   return(final_graphSEM)  
@@ -435,7 +439,7 @@ make_zFig4_CE_data <- function(fit_z_sem){
     
     cef_nestedness <- conditional_effects(fit_z_sem,
                                           effects = c("zN")))
-
+  
   return(Fig4_CE_data)
 }
 
