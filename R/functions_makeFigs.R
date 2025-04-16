@@ -284,6 +284,7 @@ makeFig2 <- function(bga){
   
   #### all #####
   Fig2 <- ggarrange(pca, box, nrow = 2, ncol = 1, heights = c(2,1), labels = c("a", ""))
+  ggsave(file = "PAPER_FIGS/script_output_figs/Fig2/archiAll.png", dpi = 150, unit = "px", width=1500, height=1200)  #width=10, height=8
   
   return(Fig2)
 }
@@ -461,12 +462,14 @@ makeFig3 <- function(bga, flux_per_prey_Ic){
       legend.position = "none") +
     scale_y_continuous(limits = c(0, 0.3))
   
-  box <- ggarrange(boxbAut, boxmInv, boxFish, boxdet, boxzooP, boxsInv, nrow = 2, ncol = 3, labels = c("2", "3", "4", "5", "6", "7"))
+  box <- ggarrange(boxbAut, boxmInv, boxFish, boxdet, boxzooP, boxsInv, nrow = 2, ncol = 3, labels = c("b", "c", "d", "e", "f", "g"))
   box <- annotate_figure(box, left = text_grob("Proportion of carbon flowing through major pathways", 
                                                color = "black", size = 14, rot = 90))
   
   #### all #####
-  all <- ggarrange(pca, box, nrow = 2, ncol = 1, heights = c(1,1), labels = c("1", ""))
+  all <- ggarrange(pca, box, nrow = 2, ncol = 1, heights = c(1,1), labels = c("a", ""))
+  ggsave(file = "PAPER_FIGS/script_output_figs/Fig3/fluxAll.png", dpi = 150, unit = "px", width=1500, height=1200)  #width=10, height=8
+  
   return(all)  
 }
 

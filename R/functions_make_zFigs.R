@@ -158,10 +158,10 @@ make_zFig2 <- function(bga){
       axis.text = element_text(size = 12),
       legend.position = "none")
   
-  box <- ggarrange(boxS, boxC, boxQn, boxN, nrow = 1, ncol = 4, labels = c("2", "3", "4", "5"))
+  box <- ggarrange(boxS, boxC, boxQn, boxN, nrow = 1, ncol = 4, labels = c("b", "c", "d", "e"))
   
   #### all #####
-  Fig2 <- ggarrange(pca, box, nrow = 2, ncol = 1, heights = c(2,1), labels = c("1", ""))
+  Fig2 <- ggarrange(pca, box, nrow = 2, ncol = 1, heights = c(2,1), labels = c("a", ""))
   ggsave(file = "PAPER_FIGS/script_output_figs/Fig2/archiAll_z.png", dpi = 150, unit = "px", width=1500, height=1200)  #width=10, height=8
   
   return(Fig2)

@@ -40,7 +40,6 @@ bga|stem|283d299063356e38|f7821d2093ffa92a|e246954f71b1cea6|1386966298||t20192.4
 data_sem|stem|bbd565bef684b1af|894ffe8190418e88|e08841a3599906e0|1326323460||t20192.5181879846s|s92023b|92023|rds|local|vector|||0.289||
 fit_sem|stem|765f1512c0b0c3b4|14b3bd2236e7a1a4|f6c8e6ebe7ff1a1a|207932400||t20192.5235864699s|s10749501b|10749501|rds|local|vector|||465.813||
 Fig4_ce_data_5000|stem|5a5259a014f2bc81|546edfe369af2437|b67b450162db19aa|-1903764653||t20187.4440753408s||487653|rds|local|vector|||1.255||objet fit_sem_5000 introuvable
-Fig3|stem|fe2191cb38eed536|b48ab4d7c9347e10|ac73b253488f70f0|-1551562388||t20192.5932506333s|s1733147b|1733147|rds|local|vector|||2.254|Removed 3 rows containing nonfinite outside the scale rangestat_boxplot.. Removed 4 rows containing nonfinite outside the scale rangestat_boxplot.|
 Fig4_ce_data|stem|d41feec06f25a5f4|416e59e95254d5c1|1e7aa5890d91896e|-1289508898||t20192.5959211257s|s487625b|487625|rds|local|vector|||228.715||
 make_zFig3|function|2f6e9b8b6aa67ed7|||||||||||||||
 Fig3_z|stem|4dbedb05be5a9a21|e786dbb0d90e379c|7fd2258465d1132b|2036445930||t20192.5931956327s||1715804|rds|local|vector|||0.006||impossible de trouver la fonction make_zFig3
@@ -64,7 +63,7 @@ Supp8|stem|9e1b70865f72dd26|80b15c9eedd3e504|28ad59492cfbd67f|-319258428||t20194
 Supp5|stem|6dcd4ddb8444e8a4|169bdebb6e1a56fd|bed790ab5fe0c0d1|-740524938||t20194.5329999562s|s2276b|2276|rds|local|vector|||2.865||
 Supp6|stem|1d47feb84585e2b4|31178b060bed2bd2|276dbd547ba7f6b9|-1040752283||t20194.5342425216s|s44b|44|rds|local|vector|||107.175||
 Fig2_z|stem|d48f64862c28fc84|d9ce0776d27085e3|8842aa5ca8f41bc9|-1129169918||t20194.6132611606s|s3437477b|3437477|rds|local|vector|||2.139||
-Fig2|stem|63e7f2b8d7d3b9fa|bad0cd2547b1cb95|831926828bf4f973|356038342||t20194.6209138011s|s3450535b|3450535|rds|local|vector|||1.75||
+Fig4_ce|stem|de204388e1ddd097|ef6140371e430df9|62a96b064ee2e16f|667576057||t20194.6212496848s|s35203b|35203|rds|local|vector|||11.125||
 makeFig2_data|function|3452beb3f23e04df
 get_z_scores|function|262c114df90fb410
 get_predictors|function|df81972310b672d8
@@ -97,8 +96,8 @@ makeSupp3|function|fbbd575e9f4b2c7a
 nestedness|function|177e972d248a9b24
 make_zFig4_CE|function|5507975f79cc42f5
 makeSupp4|function|15b362e809b9081b
-makeFig2|function|6d74ac69069a4c10
-makeFig3|function|2f6e9b8b6aa67ed7
+makeFig2|function|85ae898199f0c692
+makeFig3|function|0964914a55aa871d
 makeSupp8|function|f83e6f90a7012e33
 get_fish_rls|function|598f09ddf7ea8a5d
 makeSupp9|function|c82942eaa25f585c
@@ -124,4 +123,5 @@ gives_flux_per_cat|function|3571aadddfa97ca5
 gives_list_mat_int_rmv|function|56a9924dfc89c3b8
 get_network_topo|function|1eedc218117abb98
 get_all_topo|function|8753e3525b35d738
-Fig4_ce|stem|de204388e1ddd097|ef6140371e430df9|62a96b064ee2e16f|667576057||t20194.6212496848s|s35203b|35203|rds|local|vector|||11.125||
+Fig2|stem|ebce573668a40797|bad0cd2547b1cb95|2a0ea9256dc60ce4|356038342||t20194.6309672632s|s3481195b|3481195|rds|local|vector|||2.595||
+Fig3|stem|26ce97b05222050a|b48ab4d7c9347e10|1b284eb1c879e1db|-1551562388||t20194.6310086063s|s1774623b|1774623|rds|local|vector|||3.087|Removed 3 rows containing nonfinite outside the scale rangestat_boxplot.. Removed 4 rows containing nonfinite outside the scale rangestat_boxplot.|
