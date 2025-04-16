@@ -162,7 +162,7 @@ make_zFig2 <- function(bga){
   
   #### all #####
   Fig2 <- ggarrange(pca, box, nrow = 2, ncol = 1, heights = c(2,1), labels = c("a", ""))
-  ggsave(file = "PAPER_FIGS/script_output_figs/Fig2/archiAll_z.png", dpi = 150, unit = "px", width=1500, height=1200)  #width=10, height=8
+  ggsave(file = "PAPER_FIGS/script_output_figs/Fig2/archiAll_z.png", dpi = 150, unit = "px", width=1500, height=1500)  #width=10, height=8
   
   return(Fig2)
 }

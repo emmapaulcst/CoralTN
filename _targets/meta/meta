@@ -62,8 +62,9 @@ Supp4|stem|9fd9cb01bb884297|1975f8933665adff|8f5348deb0c943c2|-441397657||t20194
 Supp8|stem|9e1b70865f72dd26|80b15c9eedd3e504|28ad59492cfbd67f|-319258428||t20194.5274468187s|s101b|101|rds|local|vector|||0.749||
 Supp5|stem|6dcd4ddb8444e8a4|169bdebb6e1a56fd|bed790ab5fe0c0d1|-740524938||t20194.5329999562s|s2276b|2276|rds|local|vector|||2.865||
 Supp6|stem|1d47feb84585e2b4|31178b060bed2bd2|276dbd547ba7f6b9|-1040752283||t20194.5342425216s|s44b|44|rds|local|vector|||107.175||
-Fig2_z|stem|d48f64862c28fc84|d9ce0776d27085e3|8842aa5ca8f41bc9|-1129169918||t20194.6132611606s|s3437477b|3437477|rds|local|vector|||2.139||
 Fig4_ce|stem|de204388e1ddd097|ef6140371e430df9|62a96b064ee2e16f|667576057||t20194.6212496848s|s35203b|35203|rds|local|vector|||11.125||
+Fig2|stem|63f7fb48054f0f48|bad0cd2547b1cb95|332d6bd3f7afac0e|356038342||t20194.6334109053s|s3481199b|3481199|rds|local|vector|||2.702||
+Fig3|stem|cb20aa4ba0388858|b48ab4d7c9347e10|1f85b1b11761a41e|-1551562388||t20194.6334523873s|s1774627b|1774627|rds|local|vector|||3.126|Removed 3 rows containing nonfinite outside the scale rangestat_boxplot.. Removed 4 rows containing nonfinite outside the scale rangestat_boxplot.|
 makeFig2_data|function|3452beb3f23e04df
 get_z_scores|function|262c114df90fb410
 get_predictors|function|df81972310b672d8
@@ -87,7 +88,7 @@ gives_data_SEM|function|8646d0508efdb014
 gives_bga_dataset|function|c58d570e62f5f319
 weight_matrices|function|ef5c1447e0ec8d12
 somme_prey_cat|function|f290257625d57ecc
-make_zFig2|function|e1ed450d58867738
+make_zFig2|function|fa91b5d20cf7b660
 get_fit_final|function|8c184acaa5281064
 plotDAG_round|function|54b4cbd980a9fc3a
 centralities|function|fd468fe30f39e1f8
@@ -123,5 +124,4 @@ gives_flux_per_cat|function|3571aadddfa97ca5
 gives_list_mat_int_rmv|function|56a9924dfc89c3b8
 get_network_topo|function|1eedc218117abb98
 get_all_topo|function|8753e3525b35d738
-Fig2|stem|63f7fb48054f0f48|bad0cd2547b1cb95|332d6bd3f7afac0e|356038342||t20194.6334109053s|s3481199b|3481199|rds|local|vector|||2.702||
-Fig3|stem|cb20aa4ba0388858|b48ab4d7c9347e10|1f85b1b11761a41e|-1551562388||t20194.6334523873s|s1774627b|1774627|rds|local|vector|||3.126|Removed 3 rows containing nonfinite outside the scale rangestat_boxplot.. Removed 4 rows containing nonfinite outside the scale rangestat_boxplot.|
+Fig2_z|stem|5acd85a1e350f67a|d9ce0776d27085e3|2721db0eb3c3c857|-1129169918||t20194.6349236559s|s3437473b|3437473|rds|local|vector|||2.883||
