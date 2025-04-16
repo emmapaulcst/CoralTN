@@ -280,10 +280,10 @@ makeFig2 <- function(bga){
       axis.text = element_text(size = 12),
       legend.position = "none")
   
-  box <- ggarrange(boxS, boxC, boxQn, boxN, nrow = 1, ncol = 4, labels = c("2", "3", "4", "5"))
+  box <- ggarrange(boxS, boxC, boxQn, boxN, nrow = 1, ncol = 4, labels = c("b", "c", "d", "e"))
   
   #### all #####
-  Fig2 <- ggarrange(pca, box, nrow = 2, ncol = 1, heights = c(2,1), labels = c("1", ""))
+  Fig2 <- ggarrange(pca, box, nrow = 2, ncol = 1, heights = c(2,1), labels = c("a", ""))
   
   return(Fig2)
 }
@@ -833,6 +833,30 @@ makeFig4_CE <- function(Fig4_CE_data){
     ggplotGrob(plot_zooP_coral),
     ncol = 2  # Adjust number of columns as needed
   )
+  
+  # library(gridExtra)
+  # library(grid)
+  # library(ggplot2)
+  # 
+  # # Create labeled versions of your plots
+  # plots <- list(
+  #   plot_S_algae, plot_C_npp, plot_C_coral,
+  #   plot_fish_grav, plot_mInv_coral, plot_zooP_coral
+  # )
+  # 
+  # # Wrap each plot with a label
+  # labeled_plots <- mapply(function(p, label) {
+  #   arrangeGrob(
+  #     ggplotGrob(p),
+  #     top = textGrob(label, x = unit(0, "npc"), y = unit(1, "npc"), 
+  #                    just = c("left", "top"), 
+  #                    gp = gpar(fontface = "bold", fontsize = 10))
+  #   )
+  # }, plots, label = c("b", "c", "d", "e", "f", "g"), SIMPLIFY = FALSE)
+  # 
+  # # Arrange labeled plots
+  # grid.arrange(grobs = labeled_plots, ncol = 2)
+  
   
   # Return the combined grob object
   return(CE)
