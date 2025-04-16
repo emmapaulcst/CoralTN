@@ -96,8 +96,8 @@ makeSupp3|function|fbbd575e9f4b2c7a
 nestedness|function|177e972d248a9b24
 make_zFig4_CE|function|5507975f79cc42f5
 makeSupp4|function|15b362e809b9081b
-makeFig2|function|85ae898199f0c692
-makeFig3|function|0964914a55aa871d
+makeFig2|function|e749a8004c46ee69
+makeFig3|function|ec1a23b718bdd4ea
 makeSupp8|function|f83e6f90a7012e33
 get_fish_rls|function|598f09ddf7ea8a5d
 makeSupp9|function|c82942eaa25f585c
@@ -123,5 +123,5 @@ gives_flux_per_cat|function|3571aadddfa97ca5
 gives_list_mat_int_rmv|function|56a9924dfc89c3b8
 get_network_topo|function|1eedc218117abb98
 get_all_topo|function|8753e3525b35d738
-Fig2|stem|ebce573668a40797|bad0cd2547b1cb95|2a0ea9256dc60ce4|356038342||t20194.6309672632s|s3481195b|3481195|rds|local|vector|||2.595||
-Fig3|stem|26ce97b05222050a|b48ab4d7c9347e10|1b284eb1c879e1db|-1551562388||t20194.6310086063s|s1774623b|1774623|rds|local|vector|||3.087|Removed 3 rows containing nonfinite outside the scale rangestat_boxplot.. Removed 4 rows containing nonfinite outside the scale rangestat_boxplot.|
+Fig2|stem|63f7fb48054f0f48|bad0cd2547b1cb95|332d6bd3f7afac0e|356038342||t20194.6334109053s|s3481199b|3481199|rds|local|vector|||2.702||
+Fig3|stem|cb20aa4ba0388858|b48ab4d7c9347e10|1f85b1b11761a41e|-1551562388||t20194.6334523873s|s1774627b|1774627|rds|local|vector|||3.126|Removed 3 rows containing nonfinite outside the scale rangestat_boxplot.. Removed 4 rows containing nonfinite outside the scale rangestat_boxplot.|

@@ -284,7 +284,7 @@ makeFig2 <- function(bga){
   
   #### all #####
   Fig2 <- ggarrange(pca, box, nrow = 2, ncol = 1, heights = c(2,1), labels = c("a", ""))
-  ggsave(file = "PAPER_FIGS/script_output_figs/Fig2/archiAll.png", dpi = 150, unit = "px", width=1500, height=1200)  #width=10, height=8
+  ggsave(file = "PAPER_FIGS/script_output_figs/Fig2/archiAll.png", dpi = 150, unit = "px", width=1500, height=1500)  #width=10, height=8
   
   return(Fig2)
 }
@@ -468,7 +468,7 @@ makeFig3 <- function(bga, flux_per_prey_Ic){
   
   #### all #####
   all <- ggarrange(pca, box, nrow = 2, ncol = 1, heights = c(1,1), labels = c("a", ""))
-  ggsave(file = "PAPER_FIGS/script_output_figs/Fig3/fluxAll.png", dpi = 150, unit = "px", width=1500, height=1200)  #width=10, height=8
+  ggsave(file = "PAPER_FIGS/script_output_figs/Fig3/fluxAll.png", dpi = 150, unit = "px", width=1500, height=2000)  #width=10, height=8
   
   return(all)  
 }
