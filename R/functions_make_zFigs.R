@@ -172,6 +172,89 @@ make_zFig2 <- function(bga){
 
 # fit_sem <- fit_z_sem
 
+make_permanova <- function(bga){
+  
+  bga <- bga %>%
+    rename(N = NODF2, 
+           Od = G, 
+           Id = V,
+           Region = Realm) %>%    
+    mutate(Region_short = case_when(Region == "Tropical Eastern Pacific" ~ "TEP",
+                                    Region == "Tropical Atlantic" ~ "TA", 
+                                    Region == "Eastern Indo-Pacific" ~ "EIP",
+                                    Region == "Central Indo-Pacific" ~ "CIP",
+                                    Region == "Western Indo-Pacific" ~ "WIP")) %>% 
+    mutate(Region = base::factor(Region, levels = c("Tropical Eastern Pacific",
+                                                    "Tropical Atlantic", 
+                                                    "Eastern Indo-Pacific", 
+                                                    "Central Indo-Pacific", 
+                                                    "Western Indo-Pacific"))) %>% 
+    mutate(Region_short = base::factor(Region_short, levels = c("TEP",
+                                                                "TA", 
+                                                                "EIP", 
+                                                                "CIP", 
+                                                                "WIP"))) %>% 
+    ungroup()
+  
+  archi <- bga %>% 
+    select(SiteCode, Region, Region_short, S, L, C, Bc, Od, Id, zN, zQn) %>% 
+    mutate(S = (log(S+1) - mean(log(S+1))) / sd(log(S+1)),
+           L = (log(L+1) - mean(log(L+1))) / sd(log(L+1)),
+           C = (log(C+1) - mean(log(C+1))) / sd(log(C+1)),
+           Bc = (log(Bc+1) - mean(log(Bc+1))) / sd(log(Bc+1)),
+           Od = (log(Od+1) - mean(log(Od+1))) / sd(log(Od+1)),
+           Id = (log(Id+1) - mean(log(Id+1))) / sd(log(Id+1)),
+
+           # S = (S - mean(S)) / sd(S),
+           # C = (C - mean(C)) / sd(C),
+           
+           zN = (zN - mean(zN)) / sd(zN),
+           zQn = (zQn - mean(zQn)) / sd(zQn)) %>% 
+    select(SiteCode, Region, Region_short, S, L, C, Bc, Od, Id, zN, zQn)
+  
+  # Distance Matrix #
+  perm_dist <- vegdist(archi[,4:11], method = 'gower')
+  # perm_dist <- vegdist(top[,4:10], method = 'bray')
+  
+  # Assumptions #
+  dispersion <- betadisper(perm_dist, group = archi$Region, type = "centroid")
+  
+  
+  
+  
+  
+  # Extract site scores (one row per sample)
+  scores_df <- as.data.frame(scores(dispersion, display = "sites"))
+  
+  # Add Region info for plotting
+  scores_df$Region <- archi$Region
+  
+  # Plot with ggplot2
+  ggplot(scores_df, aes(x = PCoA1, y = PCoA2, color = Region)) +
+    geom_point(size = 3) +
+    geom_text_repel(aes(label = Region), size = 3) +
+    theme_minimal() +
+    labs(title = "Multivariate Dispersion (betadisper)",
+         x = "PCoA Axis 1",
+         y = "PCoA Axis 2")
+  
+  
+  
+  
+  # plot(dispersion, text = F)# labels = TRUE, cex = 0.2)
+  
+  # To assess the dispersion
+  # The pvalue isn't significant => the dispersion is  the same between groups
+  # Donc on peut faire la permanova (c'est une des conditions pour le test)
+  anova(dispersion)
+  
+  # Test #
+  adonis2(perm_dist ~ as.factor(archi$Region), data = perm_dist, permutations=9999)
+  
+}
+
+# fit_sem <- fit_z_sem_5000
+
 make_zFig4_SEM <- function(fit_sem){
   
   ##### Fe ####

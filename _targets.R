@@ -117,8 +117,8 @@ list(
   #### z_SEM ####
   tar_target(data_z_sem, gives_zdata_SEM(bga, flux_per_prey_Ic)),
   tar_target(fit_z_sem, make_zSEM(data_z_sem)),
-  # tar_target(fit_z_sem_5000, make_SEM_5000(data_sem))
-  
+  tar_target(fit_z_sem_5000, make_zSEM_5000(data_z_sem)),
+
   #### MAKE FIGS ####
   ##### Fig1 ####
   tar_target(Fig1_data, makeFig1_data()),
@@ -157,9 +157,9 @@ list(
   tar_target(Fig4_z_ce_data, make_zFig4_CE_data(fit_z_sem)),
   tar_target(Fig4_z_ce, make_zFig4_CE(Fig4_z_ce_data)), #use this to plot : grid.draw(tar_read(Fig4_ce))
 
-  # tar_target(Fig4_sem_5000, makeFig4_SEM(fit_sem_5000)),
-  # tar_target(Fig4_ce_data_5000, makeFig4_CE_data(fit_sem_5000)),
-  # tar_target(Fig4_ce_5000, makeFig4_CE(Fig4_ce_data_5000)) #use this to plot : grid.draw(tar_read(Fig4_ce))
+  tar_target(Fig4_sem_5000, makeFig4_SEM(fit_sem_5000)),
+  tar_target(Fig4_ce_data_5000, makeFig4_CE_data(fit_sem_5000)),
+  tar_target(Fig4_ce_5000, makeFig4_CE(Fig4_ce_data_5000)), #use this to plot : grid.draw(tar_read(Fig4_ce))
   
   #### MAKE SUPP ####
   tar_target(Supp2, makeSupp2(bga)),
