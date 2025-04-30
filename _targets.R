@@ -105,18 +105,20 @@ list(
   # tar_target(info_on_fluxes, get_info_on_fluxes(flux_per_prey_Ic))
 
   #### SEM ####
-  tar_target(data_sem, gives_data_SEM(bga, flux_per_prey_Ic)),
+  # tar_target(data_sem, gives_data_SEM(bga, flux_per_prey_Ic)),
 
   # Old data for sem
   # tar_target(path_to_data, "find_bug/data.csv", format = "file"),
   # tar_target(data, get_data(path_to_data)),
 
-  tar_target(fit_sem, make_SEM(data_sem)),
+  # tar_target(fit_sem, make_SEM(data_sem)),
   # tar_target(fit_sem_5000, make_SEM_5000(data_sem)),
   
-  #### z_SEM ####
+  # Zscore sem
   tar_target(data_z_sem, gives_zdata_SEM(bga, flux_per_prey_Ic)),
+  # petit sem
   tar_target(fit_z_sem, make_zSEM(data_z_sem)),
+  # big 5000 sem
   tar_target(fit_z_sem_5000, make_zSEM_5000(data_z_sem)),
 
   #### MAKE FIGS ####
@@ -129,55 +131,49 @@ list(
   tar_target(Fig1_graphE, makeGraph(Fig1_data[['graphE']])),
 
   ##### Fig2 ####
-  tar_target(Fig2, makeFig2(bga)),
-  tar_target(Fig2_data, makeFig2_data()),
-  tar_target(Fig2_graphS, makeGraph(Fig2_data[['graphDiverse']])),
-  tar_target(Fig2_graphC, makeGraph(Fig2_data[['graphConnected']])),
-  tar_target(Fig2_graphQ, makeGraph(Fig2_data[['graphModular']])),
+  tar_target(Fig2_z, make_zFig2(bga)),
+  
+  # tar_target(Fig2, makeFig2(bga)),
+  # tar_target(Fig2_data, makeFig2_data()),
+  # tar_target(Fig2_graphS, makeGraph(Fig2_data[['graphDiverse']])),
+  # tar_target(Fig2_graphC, makeGraph(Fig2_data[['graphConnected']])),
+  # tar_target(Fig2_graphQ, makeGraph(Fig2_data[['graphModular']])),
 
   ##### Fig3 ####
   tar_target(Fig3, makeFig3(bga, flux_per_prey_Ic)),
 
   ##### Fig 4 ####
-  tar_target(Fig4_sem, makeFig4_SEM(fit_sem)),
-  tar_target(Fig4_ce_data, makeFig4_CE_data(fit_sem)),
-  tar_target(Fig4_ce, makeFig4_CE(Fig4_ce_data)), #use this to plot : grid.draw(tar_read(Fig4_ce))
+  
+  # tar_target(Fig4_z_sem, make_zFig4_SEM(fit_z_sem)),
+  # tar_target(Fig4_z_ce_data, make_zFig4_CE_data(fit_z_sem)),
+  # tar_target(Fig4_z_ce, make_zFig4_CE(Fig4_z_ce_data)), #use this to plot : grid.draw(tar_read(Fig4_ce))
+  
+  tar_target(Fig4_z_sem_5000, make_zFig4_SEM(fit_z_sem_5000)),
+  tar_target(Fig4_z_ce_data_5000, make_zFig4_CE_data(fit_z_sem_5000)),
+  tar_target(Fig4_z_ce_5000, make_zFig4_CE(Fig4_z_ce_data_5000)), #use this to plot : grid.draw(tar_read(Fig4_ce))
+  
+  
+  # tar_target(Fig4_sem, makeFig4_SEM(fit_sem)),
+  # tar_target(Fig4_ce_data, makeFig4_CE_data(fit_sem)),
+  # tar_target(Fig4_ce, makeFig4_CE(Fig4_ce_data)), #use this to plot : grid.draw(tar_read(Fig4_ce))
 
   # tar_target(Fig4_sem_5000, makeFig4_SEM(fit_sem_5000)),
   # tar_target(Fig4_ce_data_5000, makeFig4_CE_data(fit_sem_5000)),
   # tar_target(Fig4_ce_5000, makeFig4_CE(Fig4_ce_data_5000)), #use this to plot : grid.draw(tar_read(Fig4_ce))
 
-  
-  #### MAKE Z-FIGS ####
-  ##### Fig2 ####
-  tar_target(Fig2_z, make_zFig2(bga)),
-
-  ##### Fig 4 ####
-  tar_target(Fig4_z_sem, make_zFig4_SEM(fit_z_sem)),
-  tar_target(Fig4_z_ce_data, make_zFig4_CE_data(fit_z_sem)),
-  tar_target(Fig4_z_ce, make_zFig4_CE(Fig4_z_ce_data)), #use this to plot : grid.draw(tar_read(Fig4_ce))
-
-  tar_target(Fig4_sem_5000, makeFig4_SEM(fit_sem_5000)),
-  tar_target(Fig4_ce_data_5000, makeFig4_CE_data(fit_sem_5000)),
-  tar_target(Fig4_ce_5000, makeFig4_CE(Fig4_ce_data_5000)), #use this to plot : grid.draw(tar_read(Fig4_ce))
-  
   #### MAKE SUPP ####
   tar_target(Supp2, makeSupp2(bga)),
-  tar_target(Supp3, makeSupp3(bga)),
-  tar_target(Supp4, makeSupp4(bga)),
-  tar_target(Supp5, plotDAG()),
-  tar_target(Supp6, plot_ppchecks(fit_sem)),
-  tar_target(Supp8, makeSupp8(bga)),
-  tar_target(Supp9, makeSupp9(flux_per_prey_Ic)),
-  
-  #### MAKE Z-SUPP ####
   tar_target(Supp3_z, makeSupp3_z(bga)),
+  # tar_target(Supp3, makeSupp3(bga)),
   tar_target(Supp4_z, makeSupp4_z(bga)),
+  # tar_target(Supp4, makeSupp4(bga)),
+  tar_target(Supp5, plotDAG()),
   tar_target(Supp6_z, plot_ppchecks_z(fit_z_sem)),
+  # tar_target(Supp6, plot_ppchecks(fit_sem)),
   tar_target(Supp8_z, makeSupp8_z(bga)),
+  # tar_target(Supp8, makeSupp8(bga)),
   tar_target(Supp9_z, makeSupp9_z(flux_per_prey_Ic))
-  
-  
+  # tar_target(Supp9, makeSupp9(flux_per_prey_Ic)),
   
 )
 

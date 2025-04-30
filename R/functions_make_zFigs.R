@@ -34,7 +34,7 @@
 # library(GGally)
 # library(ggbreak)
 # library(scales)
-# 
+# library(gridExtra)
 # library(DiagrammeRsvg)
 # library(htmltools)
 # library(svglite)
@@ -500,35 +500,44 @@ make_zFig4_SEM <- function(fit_sem){
   return(final_graphSEM)  
 }
 
-make_zFig4_CE_data <- function(fit_z_sem){
+
+make_zFig4_CE_data <- function(fit_sem){
   
   Fig4_CE_data <- list(  
-    cef_grav <- conditional_effects(fit_z_sem,
-                                    effects = c("gravity")),
+    cef_grav = conditional_effects(fit_sem, effects = c("gravity")),
     
-    cef_npp <- conditional_effects(fit_z_sem,
-                                   effects = c("npp")),
+    cef_npp = conditional_effects(fit_sem, effects = c("npp")),
     
-    cef_coral <- conditional_effects(fit_z_sem,
+    cef_coral = conditional_effects(fit_sem,
                                      effects = c("coral")),
     
-    cef_algae <- conditional_effects(fit_z_sem,
-                                     effects = c("algae")),
+    cef_algae = conditional_effects(fit_sem, effects = c("algae")),
     
     
-    cef_modularity <- conditional_effects(fit_z_sem,
-                                          effects = c("zQn")),
+    cef_modularity = conditional_effects(fit_sem, effects = c("zQn")),
     
     
-    cef_nestedness <- conditional_effects(fit_z_sem,
-                                          effects = c("zN")))
+    cef_nestedness = conditional_effects(fit_sem, effects = c("zN")))
+
   
   return(Fig4_CE_data)
 }
 
+# Fig4_CE_data <- Fig4_z_ce_data
+# test <- make_zFig4_CE(Fig4_z_ce_data)
+# fit_sem <- fit_z_sem_5000
+
 make_zFig4_CE <- function(Fig4_CE_data){
+  # cef
+  # cef_grav = conditional_effects(fit_sem, effects = c("gravity"), options(mc.cores = parallel::detectCores()))
+  # cef_npp = conditional_effects(fit_sem, effects = c("npp"))
+  # cef_coral = conditional_effects(fit_sem, effects = c("coral"))
+  # cef_algae = conditional_effects(fit_sem, effects = c("algae"))
+  # cef_modularity = conditional_effects(fit_sem, effects = c("zQn"))
+  # cef_nestedness = conditional_effects(fit_sem, effects = c("zN"))
+
   
-  plot_fish_grav <- plot(Fig4_CE_data[[1]], 
+  plot_fish_grav = plot(Fig4_CE_data[[1]], 
                          points = getOption("brms.plot_points", FALSE),
                          re_formula = NULL,
                          point_args = list(
@@ -536,11 +545,11 @@ make_zFig4_CE <- function(Fig4_CE_data){
                            alpha = 0.5),
                          line_args = list(color = "#E9695F"),
                          theme = theme_minimal(),
-                         ask = F) [[3]] +
+                         ask = F) [["fish.fish_gravity"]] +
     labs(x = "Gravity",
          y = "fish")
   
-  plot_S_algae <- plot(Fig4_CE_data[[4]],
+  plot_S_algae = plot(Fig4_CE_data[[4]],
                        points = getOption("brms.plot_points", FALSE),
                        re_formula = NULL,
                        point_args = list(
@@ -548,11 +557,11 @@ make_zFig4_CE <- function(Fig4_CE_data){
                          alpha = 0.5),
                        line_args = list(color = "#74BBCD"),
                        theme = theme_minimal(),
-                       ask = F) [[7]] +
+                       ask = F) [["S.S_algae"]] +
     labs(x = "Algae",
          y = "S")
   
-  plot_mInv_coral <- plot(Fig4_CE_data[[3]], 
+  plot_sInv_algae = plot(Fig4_CE_data[[4]], 
                           points = getOption("brms.plot_points", FALSE),
                           re_formula = NULL,
                           point_args = list(
@@ -560,23 +569,35 @@ make_zFig4_CE <- function(Fig4_CE_data){
                             alpha = 0.5),
                           line_args = list(color = "#E9695F"),
                           theme = theme_minimal(),
-                          ask = F) [[4]] +
+                          ask = F) [["sInv.sInv_algae"]] +
+    labs(x = "Algae",
+         y = "sInv")
+  
+  plot_mInv_coral = plot(Fig4_CE_data[[3]], 
+                          points = getOption("brms.plot_points", FALSE),
+                          re_formula = NULL,
+                          point_args = list(
+                            color = "grey80",
+                            alpha = 0.5),
+                          line_args = list(color = "#E9695F"),
+                          theme = theme_minimal(),
+                          ask = F) [["mInv.mInv_coral"]] +
     labs(x = "Coral",
          y = "mInv")
   
-  plot_zooP_coral <- plot(Fig4_CE_data[[3]], 
-                          points = getOption("brms.plot_points", FALSE),
-                          re_formula = NULL,
-                          point_args = list(
-                            color = "grey80",
-                            alpha = 0.5),
-                          line_args = list(color = "#E9695F"),
-                          theme = theme_minimal(),
-                          ask = F) [[6]] +
-    labs(x = "Coral",
-         y = "zooP")
+  # plot_zooP_coral <- plot(Fig4_CE_data[[3]], 
+  #                         points = getOption("brms.plot_points", FALSE),
+  #                         re_formula = NULL,
+  #                         point_args = list(
+  #                           color = "grey80",
+  #                           alpha = 0.5),
+  #                         line_args = list(color = "#E9695F"),
+  #                         theme = theme_minimal(),
+  #                         ask = F) [["zooP.zooP_coral"]] +
+  #   labs(x = "Coral",
+  #        y = "zooP")
   
-  plot_C_coral <- plot(Fig4_CE_data[[3]], 
+  plot_C_coral = plot(Fig4_CE_data[[3]], 
                        points = getOption("brms.plot_points", FALSE),
                        re_formula = NULL,
                        point_args = list(
@@ -584,11 +605,11 @@ make_zFig4_CE <- function(Fig4_CE_data){
                          alpha = 0.5),
                        line_args = list(color = "#74BBCD"),
                        theme = theme_minimal(),
-                       ask = F) [[6]] +
+                       ask = F) [["C.C_coral"]] +
     labs(x = "Coral",
          y = "C")
   
-  plot_C_npp <- plot(Fig4_CE_data[[2]], 
+  plot_C_npp = plot(Fig4_CE_data[[2]], 
                      points = getOption("brms.plot_points", FALSE),
                      re_formula = NULL,
                      point_args = list(
@@ -596,7 +617,7 @@ make_zFig4_CE <- function(Fig4_CE_data){
                        alpha = 0.5),
                      line_args = list(color = "#74BBCD"),
                      theme = theme_minimal(),
-                     ask = F) [[6]] +
+                     ask = F) [["C.C_npp"]] +
     labs(x = "NPP",
          y = "C")
   
@@ -613,11 +634,12 @@ make_zFig4_CE <- function(Fig4_CE_data){
     ggplotGrob(plot_C_coral),
     ggplotGrob(plot_fish_grav),
     ggplotGrob(plot_mInv_coral),
-    ggplotGrob(plot_zooP_coral),
+    # ggplotGrob(plot_zooP_coral),
+    ggplotGrob(plot_sInv_algae),
     ncol = 2  # Adjust number of columns as needed
   )
   
-  grid.draw(CE)
+  # grid.draw(CE)
   ggsave('PAPER_FIGS/script_output_figs/Fig4/plotCE_z.png', plot = CE, unit = "px", width = 2000, height = 2000, dpi = 200)
   
   
