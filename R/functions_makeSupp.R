@@ -253,8 +253,8 @@ plotDAG_round <- function(){
   
   .flux <- rbind(
     .bAut <- cbind(
-      rep("bAut", 7),
-      c("Algae", "Turf", "Grav.", "S", "C", "N", "Qn"),
+      rep("bAut", 8),
+      c("NPP", "Algae", "Turf", "Grav.", "S", "C", "N", "Qn"),
       rep(1, 7)),
     
     .det <- cbind(

@@ -84,7 +84,8 @@ make_zFig2 <- function(bga){
       
       zN = (zN - mean(zN)) / sd(zN),
       zQn = (zQn - mean(zQn)) / sd(zQn)) %>% 
-    select(SiteCode, Region, Region_short, S, C, zN, zQn)
+    select(SiteCode, Region, Region_short, S, C, zN, zQn) %>% 
+    rename(N = zN, Qn = zQn)
   
   #### pca ####
   pca_res <- prcomp(archi[4:7], scale. = TRUE) 

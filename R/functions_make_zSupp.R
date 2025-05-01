@@ -81,7 +81,8 @@ makeSupp3_z <- function(bga){
            # N = (log(N+1) - mean(log(N))) / sd(log(N+1)),
            # Qn = (log(Qn+1) - mean(log(Qn+1))) / sd(log(Qn+1)),
            zN = (zN - mean(zN)) / sd(zN),
-           zQn = (zQn - mean(zQn)) / sd(zQn))
+           zQn = (zQn - mean(zQn)) / sd(zQn)) %>% 
+    rename(N = zN, Qn = zQn)
   
   pca_res <- prcomp(.archi[4:11], scale. = TRUE) 
   (pca_all_z <- autoplot(pca_res, data = .archi, size = 2, colour = 'Region', fill = 'Region', alpha = 0.7, 
@@ -143,7 +144,8 @@ makeSupp4_z <- function(bga){
            # C = (C - mean(C)) / sd(C),
            
            zN = (zN - mean(zN)) / sd(zN),
-           zQn = (zQn - mean(zQn)) / sd(zQn))
+           zQn = (zQn - mean(zQn)) / sd(zQn)) %>% 
+    rename(N = zN, Qn = zQn)
   
   mcor_archi = cor(archi[4:11])
   p.mat_archi <- cor_pmat(mcor_archi)
@@ -208,9 +210,11 @@ plot_ppchecks_z <- function(fit_z_sem){
 
 #### MAKE SUPP 8 - CAT ####
 
+tar_load(bga)
+
 makeSupp8_z <- function(bga){
   
-  .archi_bga <- bga %>% 
+  archi_bga <- bga %>% 
     rename(N = NODF2, 
            Od = G, 
            Id = V,
@@ -232,7 +236,7 @@ makeSupp8_z <- function(bga){
                                                                 "WIP"))) %>% 
     ungroup()
   
-  data <- .archi_bga %>% 
+  data <- archi_bga %>% 
     mutate(sum_benthos = coral + algae + turf) %>%
     filter(sum_benthos <= 100) %>% 
     mutate(coral_prop = (coral/sum_benthos)*100,
@@ -246,7 +250,8 @@ makeSupp8_z <- function(bga){
            coral_prop:turf_prop,
            sum_benthos,
            coral_max:turf_max,
-           S, C, zN, zQn)
+           S, C, zN, zQn) %>% 
+    rename(N = zN, Qn = zQn)
   
   .top_coral <- data %>%
     arrange(coral_prop) %>%
@@ -262,12 +267,12 @@ makeSupp8_z <- function(bga){
     mutate(tiptop = "turf")
   
   top <- rbind(.top_coral, .top_algae, .top_turf) %>%
-    select(SiteCode, Region, tiptop, S, C, zN, zQn) %>% 
+    select(SiteCode, Region, tiptop, S, C, N, Qn) %>% 
     mutate(S = (log(S+1) - mean(log(S+1))) / sd(log(S+1)),
            C = (log(C+1) - mean(log(C+1))) / sd(log(C+1)),
-           zN = (zN - mean(zN)) / sd(zN),
-           zQn = (zQn - mean(zQn)) / sd(zQn)) %>% 
-    select(SiteCode, Region, tiptop, S, C, zN, zQn)
+           N = (N - mean(N)) / sd(N),
+           Qn = (Qn - mean(Qn)) / sd(Qn)) %>% 
+    select(SiteCode, Region, tiptop, S, C, N, Qn)
   
   pca_res <- prcomp(top[4:7], scale. = TRUE)
   
