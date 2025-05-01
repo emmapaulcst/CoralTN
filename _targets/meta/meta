@@ -50,7 +50,6 @@ Supp9|stem|5cf2df8edb6290e1|a96d0ef0ffdfb6e6|fabc4a4ed0f256e1|-1484557233||t2019
 Supp3|stem|ada9288267870235|f8ac181cd30bb0db|2b60e96d6f28e6fc|1302856944||t20194.5274288555s|s106b|106|rds|local|vector|||1.088||
 Supp4|stem|9fd9cb01bb884297|1975f8933665adff|8f5348deb0c943c2|-441397657||t20194.5274380223s|s99b|99|rds|local|vector|||0.773||
 Supp8|stem|9e1b70865f72dd26|80b15c9eedd3e504|28ad59492cfbd67f|-319258428||t20194.5274468187s|s101b|101|rds|local|vector|||0.749||
-Supp5|stem|6dcd4ddb8444e8a4|169bdebb6e1a56fd|bed790ab5fe0c0d1|-740524938||t20194.5329999562s|s2276b|2276|rds|local|vector|||2.865||
 Fig4_ce|stem|de204388e1ddd097|ef6140371e430df9|62a96b064ee2e16f|667576057||t20194.6212496848s|s35203b|35203|rds|local|vector|||11.125||
 Fig2|stem|63f7fb48054f0f48|bad0cd2547b1cb95|332d6bd3f7afac0e|356038342||t20194.6334109053s|s3481199b|3481199|rds|local|vector|||2.702||
 Fig3|stem|cb20aa4ba0388858|b48ab4d7c9347e10|1f85b1b11761a41e|-1551562388||t20194.6334523873s|s1774627b|1774627|rds|local|vector|||3.126|Removed 3 rows containing nonfinite outside the scale rangestat_boxplot.. Removed 4 rows containing nonfinite outside the scale rangestat_boxplot.|
@@ -69,12 +68,13 @@ Fig4_z_ce_5000|stem|ab3c6bfe13404845|ecc40c9fdb1a48af|4051cd1b43fa10d8|-67798919
 Supp8_z|stem|dbe768ccb22dd6d9|1dec40ce938370d6|eeb2506290e99d0d|-1070101531||t20208.647370887s|s103b|103|rds|local|vector|||1.011||
 Supp4_z|stem|d2981b121eaf9a65|de3df47ac47b992d|f1ac7fac7e5b2852|1612994165||t20208.6473809797s|s214610b|214610|rds|local|vector|||0.73||
 Supp3_z|stem|79e99001573062f5|4613f352038cf6a4|4d689bae97992d5a|1125697348||t20208.6473916279s|s1192822b|1192822|rds|local|vector|||0.79||
+Fig2_z|stem|f2a3b120d3c9e38f|d9ce0776d27085e3|381f408391e4ec8d|-1129169918||t20209.296976451s|s1576855b|1576855|rds|local|vector|||2.314||
 makeFig2_data|function|3452beb3f23e04df
 get_z_scores|function|262c114df90fb410
 get_predictors|function|df81972310b672d8
 get_surveyID|function|7da9b55ecc295b7b
 makeSupp8_z|function|99206ea38c2d6adb
-plotDAG|function|a189ac39e38412f1
+plotDAG|function|24810a885637cc86
 make_zSEM|function|2f8bcb91422450d9
 get_c_fluxes|function|a13e51267b3f045c
 get_prey_cat|function|f59a8a63456e6d74
@@ -94,7 +94,7 @@ weight_matrices|function|ef5c1447e0ec8d12
 somme_prey_cat|function|f290257625d57ecc
 make_zFig2|function|1126b19d2dafaa79
 get_fit_final|function|8c184acaa5281064
-plotDAG_round|function|49bd0ad8088157b8
+plotDAG_round|function|752c4823fb6017c9
 centralities|function|fd468fe30f39e1f8
 makeSupp2|function|cb39d346efba20f1
 makeSupp3|function|fbbd575e9f4b2c7a
@@ -129,4 +129,4 @@ gives_flux_per_cat|function|3571aadddfa97ca5
 gives_list_mat_int_rmv|function|56a9924dfc89c3b8
 get_network_topo|function|1eedc218117abb98
 get_all_topo|function|8753e3525b35d738
-Fig2_z|stem|f2a3b120d3c9e38f|d9ce0776d27085e3|381f408391e4ec8d|-1129169918||t20209.296976451s|s1576855b|1576855|rds|local|vector|||2.314||
+Supp5|stem|e2b4bc1f014c1758|169bdebb6e1a56fd|78a40bd2917c7c87|-740524938||t20209.30319587s|s2280b|2280|rds|local|vector|||5.028||
