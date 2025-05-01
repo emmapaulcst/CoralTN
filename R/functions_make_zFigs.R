@@ -47,8 +47,8 @@
 #### FIGURES ####
 
 make_zFig2 <- function(bga){
-  
-  bga <- bga %>%
+
+    bga <- bga %>%
     rename(N = NODF2, 
            Od = G, 
            Id = V,
@@ -68,10 +68,12 @@ make_zFig2 <- function(bga){
                                                                 "EIP", 
                                                                 "CIP", 
                                                                 "WIP"))) %>% 
-    ungroup()
+    ungroup() %>% 
+    select(SiteCode, Region, Region_short, S, C, zN, zQn) %>% 
+    rename(N = zN, Qn = zQn)
   
   archi <- bga %>% 
-    select(SiteCode, Region, Region_short, S, L, C, Bc, Od, Id, zN, zQn) %>% 
+    # select(SiteCode, Region, Region_short, S, L, C, Bc, Od, Id, zN, zQn) %>% 
     mutate(S = (log(S+1) - mean(log(S+1))) / sd(log(S+1)),
       # L = (log(L+1) - mean(log(L+1))) / sd(log(L+1)),
        C = (log(C+1) - mean(log(C+1))) / sd(log(C+1)),
@@ -82,10 +84,8 @@ make_zFig2 <- function(bga){
       # S = (S - mean(S)) / sd(S),
       # C = (C - mean(C)) / sd(C),
       
-      zN = (zN - mean(zN)) / sd(zN),
-      zQn = (zQn - mean(zQn)) / sd(zQn)) %>% 
-    select(SiteCode, Region, Region_short, S, C, zN, zQn) %>% 
-    rename(N = zN, Qn = zQn)
+      N = (N - mean(N)) / sd(N),
+      Qn = (Qn - mean(Qn)) / sd(Qn))
   
   #### pca ####
   pca_res <- prcomp(archi[4:7], scale. = TRUE) 
@@ -133,7 +133,7 @@ make_zFig2 <- function(bga){
   
   # modularity
   boxQn <- ggplot() +
-    geom_boxplot(data = bga, aes(x = Region_short, y = zQn, colour = Region_short, fill = Region_short, alpha = 0.4)) +
+    geom_boxplot(data = bga, aes(x = Region_short, y = Qn, colour = Region_short, fill = Region_short, alpha = 0.4)) +
     labs(x = "") +
     scale_colour_manual(values = c("#66CCEE", "#228833", "#EE6677", "#CCBB44", "#4477AA")) +
     scale_fill_manual(values = c("#66CCEE", "#228833", "#EE6677", "#CCBB44", "#4477AA")) +
@@ -147,7 +147,7 @@ make_zFig2 <- function(bga){
   
   # nestedness
   boxN <- ggplot() +
-    geom_boxplot(data = bga, aes(x = Region_short, y = zN, colour = Region_short, fill = Region_short, alpha = 0.4)) +
+    geom_boxplot(data = bga, aes(x = Region_short, y = N, colour = Region_short, fill = Region_short, alpha = 0.4)) +
     labs(x = "") +
     scale_colour_manual(values = c("#66CCEE", "#228833", "#EE6677", "#CCBB44", "#4477AA")) +
     scale_fill_manual(values = c("#66CCEE", "#228833", "#EE6677", "#CCBB44", "#4477AA")) +

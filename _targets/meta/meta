@@ -69,7 +69,6 @@ Fig4_z_ce_5000|stem|ab3c6bfe13404845|ecc40c9fdb1a48af|4051cd1b43fa10d8|-67798919
 Supp8_z|stem|dbe768ccb22dd6d9|1dec40ce938370d6|eeb2506290e99d0d|-1070101531||t20208.647370887s|s103b|103|rds|local|vector|||1.011||
 Supp4_z|stem|d2981b121eaf9a65|de3df47ac47b992d|f1ac7fac7e5b2852|1612994165||t20208.6473809797s|s214610b|214610|rds|local|vector|||0.73||
 Supp3_z|stem|79e99001573062f5|4613f352038cf6a4|4d689bae97992d5a|1125697348||t20208.6473916279s|s1192822b|1192822|rds|local|vector|||0.79||
-Fig2_z|stem|04ab1dc59b5cb2c9|d9ce0776d27085e3|6bd47335fa397394|-1129169918||t20208.6474216283s|s3448709b|3448709|rds|local|vector|||2.007||
 makeFig2_data|function|3452beb3f23e04df
 get_z_scores|function|262c114df90fb410
 get_predictors|function|df81972310b672d8
@@ -93,7 +92,7 @@ gives_data_SEM|function|8646d0508efdb014
 gives_bga_dataset|function|c58d570e62f5f319
 weight_matrices|function|ef5c1447e0ec8d12
 somme_prey_cat|function|f290257625d57ecc
-make_zFig2|function|98ed9526323a2da0
+make_zFig2|function|1126b19d2dafaa79
 get_fit_final|function|8c184acaa5281064
 plotDAG_round|function|49bd0ad8088157b8
 centralities|function|fd468fe30f39e1f8
@@ -130,3 +129,4 @@ gives_flux_per_cat|function|3571aadddfa97ca5
 gives_list_mat_int_rmv|function|56a9924dfc89c3b8
 get_network_topo|function|1eedc218117abb98
 get_all_topo|function|8753e3525b35d738
+Fig2_z|stem|f2a3b120d3c9e38f|d9ce0776d27085e3|381f408391e4ec8d|-1129169918||t20209.296976451s|s1576855b|1576855|rds|local|vector|||2.314||
