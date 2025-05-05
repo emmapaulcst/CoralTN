@@ -977,6 +977,27 @@ make_zFig4_CE <- function(Fig4_CE_data){
   
 }
 
+#### combine SEM and CE
+
+# Load necessary libraries
+library(cowplot)
+library(magick)
+library(pdftools)
+
+# Read the PDFs using magick
+CE <- magick::image_read_pdf("~/CoralTN/PAPER_FIGS/final_figures/Fig4_CE.pdf", density = 300)
+SEM <- magick::image_read_pdf("~/CoralTN/PAPER_FIGS/final_figures/Fig4_SEM.pdf", density = 300)
+
+# Convert to ggplot-friendly format
+gA <- ggdraw() + draw_image(plotA)
+gB <- ggdraw() + draw_image(plotB)
+
+# Combine with labels A and B
+combined <- plot_grid(gA, gB, labels = c("A", "B"), ncol = 1)
+
+# Save as PDF
+ggsave("combined_plots.pdf", combined, width = 8, height = 10)
+
 # make_zFig4_CE <- function(Fig4_CE_data){
 #   # cef
 #   # cef_grav = conditional_effects(fit_sem, effects = c("gravity"), options(mc.cores = parallel::detectCores()))
