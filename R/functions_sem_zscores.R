@@ -121,6 +121,9 @@ gives_zdata_SEM <- function(bga, flux_per_prey_Ic, z_scores){
 
 # data_sem <- data
 
+tar_load(data_z_sem)
+# data_sem <- data_z_sem
+
 make_zSEM <- function(data_sem){
   #### SEM ####
   

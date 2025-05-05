@@ -86,7 +86,7 @@ makeSupp2 <- function(bga){
       coord_fixed() +
       labs(x = "Longitude", y = "Latitude", color = "Regions"))
   
-  ggsave(file = "PAPER_FIGS/script_output_figs/Supp/Supp2_map.png", dpi = 150, unit = "px", width = 1500, height = 750)
+  ggsave(file = "PAPER_FIGS/script_output_figs/Supp/Supp2_map.png", dpi = 300, unit = "px", width = 1500, height = 750)
 }
 
 # Supp2 <- makeSupp2()
@@ -144,7 +144,7 @@ makeSupp3_z <- function(bga){
             legend.position = "right") +
       scale_colour_manual(values = c("#66CCEE", "#228833", "#EE6677", "#CCBB44", "#4477AA")))
   
-  ggsave(file = "PAPER_FIGS/script_output_figs/Supp/Supp3_pcaArchiAll_z.png", dpi = 150, unit = "px", width=1500, height=1200)
+  ggsave(file = "PAPER_FIGS/script_output_figs/Supp/Supp3_pcaArchiAll_z.png", dpi = 300, unit = "px", width=1500, height=1200)
   
   return(pca_all_z)
 }
@@ -199,7 +199,7 @@ makeSupp3 <- function(bga){
             legend.position = "right") +
       scale_colour_manual(values = c("#66CCEE", "#228833", "#EE6677", "#CCBB44", "#4477AA")))
   
-  ggsave(file = "PAPER_FIGS/script_output_figs/Supp/Supp3_pcaArchiAll.png", dpi = 150, unit = "px", width=1500, height=1200)
+  ggsave(file = "PAPER_FIGS/script_output_figs/Supp/Supp3_pcaArchiAll.png", dpi = 300, unit = "px", width=1500, height=1200)
 }
 
 # Supp3 <- makeSupp3()
@@ -267,7 +267,7 @@ makeSupp4_z <- function(bga){
           axis.text = element_text(size = 12),
           legend.position = "right")
   
-  ggsave(file = "PAPER_FIGS/script_output_figs/Supp/Supp4_corr_z.png", dpi = 150, unit = "px", width = 1000, height = 750)
+  ggsave(file = "PAPER_FIGS/script_output_figs/Supp/Supp4_corr_z.png", dpi = 300, unit = "px", width = 1000, height = 750)
   
   return(archi_corrplot)
 }
@@ -330,7 +330,7 @@ makeSupp4 <- function(bga){
           axis.text = element_text(size = 12),
           legend.position = "right")
   
-  ggsave(file = "PAPER_FIGS/script_output_figs/Supp/Supp4_corr.png", dpi = 150, unit = "px", width = 1000, height = 750)
+  ggsave(file = "PAPER_FIGS/script_output_figs/Supp/Supp4_corr.png", dpi = 300, unit = "px", width = 1000, height = 750)
   
 }
 
@@ -635,7 +635,7 @@ plotDAG <- function(){
     rep(1, 9))
   
   .archi <- cbind(
-    c(rep("Node number", 6), rep("Connectance", 6), rep("N", 6), rep("Qn", 6)),
+    c(rep("Node number", 6), rep("Connectance", 6), rep("Nestedness", 6), rep("Modularity", 6)),
     c(rep(c("Net Primary Production", "Gravity", "Sea Surface Temperature", "Coral", "Algae", "Turf"), 4)),
     rep(1, 24))
   
@@ -897,7 +897,7 @@ plot_ppchecks_z <- function(fit_z_sem){
        labs(x = as.character(legend[i]), y = "Density", title = paste("Posterior predictive distribution of", as.character(legend[i]))))
     
     ggsave(ppCheck_plot, filename = paste("PAPER_FIGS/script_output_figs/Supp/Supp6_ppCheck/ppCheck_DensOverlay_", as.character(resp[i]),"_z.png", sep=""),
-           dpi = 150, unit = "px", width = 1000, height = 500)
+           dpi = 300, unit = "px", width = 1000, height = 500)
   }
   
   # scatter average
@@ -905,7 +905,7 @@ plot_ppchecks_z <- function(fit_z_sem){
     (ppCheck_plot <- pp_check(fit_z_sem, resp = as.character(resp[i]), type = "scatter_avg") +
        labs(title = paste("Scatterplot between", as.character(legend[i]), "data and the average value of \n the posterior predictive distribution of each data point")))
     ggsave(ppCheck_plot, filename = paste("PAPER_FIGS/script_output_figs/Supp/Supp7_ppCheck/ppCheck_ScatterAvg_", as.character(resp[i]),"_z.png", sep=""), 
-           dpi = 150, unit = "px", width = 1000, height = 500)
+           dpi = 300, unit = "px", width = 1000, height = 500)
   }
 }
 
@@ -931,7 +931,7 @@ plot_ppchecks <- function(fit_sem){
     (ppCheck_plot <- pp_check(fit_sem, resp = as.character(resp[i]), type = "scatter_avg") +
        labs(title = paste("Scatterplot between", as.character(legend[i]), "data and the average value of \n the posterior predictive distribution of each data point")))
     ggsave(ppCheck_plot, filename = paste("PAPER_FIGS/script_output_figs/Supp/Supp7_ppCheck/ppCheck_ScatterAvg_", as.character(resp[i]),".png", sep=""), 
-           dpi = 150, unit = "px", width = 1000, height = 500)
+           dpi = 300, unit = "px", width = 1000, height = 500)
   }
 }
 
@@ -940,6 +940,8 @@ plot_ppchecks <- function(fit_sem){
 #### MAKE SUPP 8 - CAT ####
 
 makeSupp8_z <- function(bga){
+  
+  tar_load(bga)
   
   archi_bga <- bga %>% 
     rename(N = NODF2, 
@@ -1018,8 +1020,42 @@ makeSupp8_z <- function(bga){
             axis.text = element_text(size = 12),
             legend.position = "right"))
   
-  ggsave(file = "PAPER_FIGS/script_output_figs/Supp/Supp8_pcaCAT_z.png", dpi = 150, unit = "px", width = 1000, height = 750)
+  ggsave(file = "PAPER_FIGS/script_output_figs/Supp/Supp8_pcaCAT_z.png", dpi = 300, unit = "px", width = 1000, height = 750)
+  
+  #### PERMANOVA ###
+  
+  # Distance Matrix #
+  top <- data %>% select(SiteCode, Region, S, C, N, Qn) %>% 
+    mutate(S = ((S-42)/(161-42))*100,
+           C = ((C-0.2018)/(0.6184-0.2018))*100,
+           N = ((N+7.3829)/(2.0799+7.3829))*100,
+           Qn = ((Qn+1.1995)/(18.5417+1.1995))*100) %>% 
+    mutate(across(N:Qn, ~ case_when(. > 100 ~ 100,
+                                    . < 0 ~ 0,
+                                    T ~ .)))
+  
+  
+  perm_dist <- vegdist(top[,3:6], method = 'bray')
+  # perm_dist <- vegdist(top[,4:10], method = 'bray')
+  
+  # Assumptions #
+  dispersion <- betadisper(perm_dist, group = top$Region, type = "centroid")
+  plot(dispersion)
+  
+  # To assess the dispersion
+  # The pvalue isn't significant => the dispersion is  the same between groups
+  # Donc on peut faire la permanova (c'est une des conditions pour le test)
+  anova(dispersion)
+  
+  # Test #
+  adonis2(perm_dist ~ as.factor(top$Region), data = perm_dist, permutations=9999)
+  
+  
+  return(p)
 }
+
+
+
 
 makeSupp8 <- function(bga){
   .archi_bga <- bga %>% 
@@ -1097,7 +1133,7 @@ makeSupp8 <- function(bga){
             axis.text = element_text(size = 12),
             legend.position = "right"))
   
-  ggsave(file = "PAPER_FIGS/script_output_figs/Supp/Supp8_pcaCAT.png", dpi = 150, unit = "px", width = 1000, height = 750)
+  ggsave(file = "PAPER_FIGS/script_output_figs/Supp/Supp8_pcaCAT.png", dpi = 300, unit = "px", width = 1000, height = 750)
 }
 
 # Supp8 <- makeSupp8()
@@ -1135,7 +1171,7 @@ makeSupp9_z  <- function(flux_per_prey_Ic){
           legend.text = element_text(size= 12),
           legend.position = "right")
   
-  ggsave(file = "PAPER_FIGS/script_output_figs/Supp/Supp9_kerDensity_z.png", dpi = 150, unit = "px", width = 1000, height = 750)
+  ggsave(file = "PAPER_FIGS/script_output_figs/Supp/Supp9_kerDensity_z.png", dpi = 300, unit = "px", width = 1000, height = 750)
 }
 
 makeSupp9  <- function(flux_per_prey_Ic){
@@ -1169,7 +1205,7 @@ makeSupp9  <- function(flux_per_prey_Ic){
           legend.text = element_text(size= 12),
           legend.position = "right")
   
-  ggsave(file = "PAPER_FIGS/script_output_figs/Supp/Supp9_kerDensity.png", dpi = 150, unit = "px", width = 1000, height = 750)
+  ggsave(file = "PAPER_FIGS/script_output_figs/Supp/Supp9_kerDensity.png", dpi = 300, unit = "px", width = 1000, height = 750)
 }
 
 # Supp9 <- makeSupp9()
