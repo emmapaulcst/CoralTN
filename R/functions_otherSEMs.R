@@ -1,28 +1,33 @@
+# tar_load(data_z_sem)
+# data_sem <- data_z_sem
+library(brms)
+library(dplyr)
+
 make_zSEM_full <- function(data_sem){
   #### SEM ####
   
   ##### benthos | layer 2 ####
   
-  coral <- bf(coral ~ 1 + npp + gravity + dhw + sst + (1|Realm), family = Beta)
-  algae <- bf(algae ~ 1 + npp + gravity + dhw + sst + (1|Realm), family = Beta) 
-  turf <- bf(turf ~ 1 + npp + gravity + dhw + sst + (1|Realm), family = Beta)
+  coral <- brms::bf(coral ~ 1 + npp + gravity + dhw + sst + (1|Realm), family = Beta())
+  algae <- brms::bf(algae ~ 1 + npp + gravity + dhw + sst + (1|Realm), family = Beta()) 
+  turf <- brms::bf(turf ~ 1 + npp + gravity + dhw + sst + (1|Realm), family = Beta())
   
   ##### topo | layer 3 ####
   
-  s <- bf(S ~ 1 + coral + algae + turf + npp + gravity + dhw + sst + (1|Realm))
-  c <- bf(C ~ 1 + coral + algae + turf + npp + gravity + dhw + sst + (1|Realm))
+  s <- brms::bf(S ~ 1 + coral + algae + turf + npp + gravity + dhw + sst + (1|Realm))
+  c <- brms::bf(C ~ 1 + coral + algae + turf + npp + gravity + dhw + sst + (1|Realm))
   
-  zn <- bf(zN ~ 1 + coral + algae + turf + npp + gravity + dhw + sst + (1|Realm))
-  zq <- bf(zQn ~ 1 + coral + algae + turf + npp + gravity + dhw + sst + (1|Realm))
+  zn <- brms::bf(zN ~ 1 + coral + algae + turf + npp + gravity + dhw + sst + (1|Realm))
+  zq <- brms::bf(zQn ~ 1 + coral + algae + turf + npp + gravity + dhw + sst + (1|Realm))
   
   ##### fluxes | layer 4 ####
   
-  bAut <- bf(bAut ~ 1 + coral + algae + turf + npp + gravity + dhw + sst + S + C + zN + zQn + (1|Realm), family = Beta)
-  det <- bf(det ~ 1 + coral + algae + turf + npp + gravity + dhw + sst + S + C + zN + zQn + (1|Realm), family = Beta)
-  fish <- bf(fish ~ 1 + coral + algae + turf + npp + gravity + dhw + sst + S + C + zN + zQn + (1|Realm), family = Beta)
-  mInv <- bf(mInv ~ 1 + coral + algae + turf + npp + gravity + dhw + sst + S + C  + zN + zQn + (1|Realm), family = Beta)
-  sInv <- bf(sInv ~ 1 + coral + algae + turf + npp + gravity + dhw + sst + S + C + zN + zQn + (1|Realm), family = Beta)
-  zooP <- bf(zooP ~ 1 + coral + algae + turf + npp + gravity + dhw + sst + S + C + zN + zQn + (1|Realm), family = Beta)
+  bAut <- brms::bf(bAut ~ 1 + coral + algae + turf + npp + gravity + dhw + sst + S + C + zN + zQn + (1|Realm), family = Beta())
+  det <- brms::bf(det ~ 1 + coral + algae + turf + npp + gravity + dhw + sst + S + C + zN + zQn + (1|Realm), family = Beta())
+  fish <- brms::bf(fish ~ 1 + coral + algae + turf + npp + gravity + dhw + sst + S + C + zN + zQn + (1|Realm), family = Beta())
+  mInv <- brms::bf(mInv ~ 1 + coral + algae + turf + npp + gravity + dhw + sst + S + C  + zN + zQn + (1|Realm), family = Beta())
+  sInv <- brms::bf(sInv ~ 1 + coral + algae + turf + npp + gravity + dhw + sst + S + C + zN + zQn + (1|Realm), family = Beta())
+  zooP <- brms::bf(zooP ~ 1 + coral + algae + turf + npp + gravity + dhw + sst + S + C + zN + zQn + (1|Realm), family = Beta())
   
   semPriors <- get_prior(data = data_sem,
                          bAut + det + fish + mInv + sInv + zooP +
@@ -46,7 +51,7 @@ make_zSEM_full <- function(data_sem){
 
 # fit_sem <- fit_full
 
-plotSEM <- function(fit_sem){
+plot_fullSEM <- function(fit_sem){
   
   ##### Fe ####
   
@@ -285,12 +290,16 @@ plotSEM <- function(fit_sem){
                                  as_svg = FALSE
   )
   
+  
+  export_graph(graphSEM, file_name = "PAPER_FIGS/final_figures/Supp11_fullSEM.pdf", file_type = "pdf",
+               width = 515) # width in pixel, 696 pi = 7.25 inches
+  
   return(graphSEM)  
 }
 
-tar_load(data_z_sem)
-
-fit_full <- make_zSEM_full(data_z_sem)
-graphSEM <- plotSEM(fit_full)
-export_graph(graphSEM, height = 700, file_name = "PAPER_FIGS/script_output_figs/other_sems/graphfull.png", file_type = "png") # ou svg
-
+# tar_load(data_z_sem)
+# 
+# fit_full <- make_zSEM_full(data_z_sem)
+# graphSEM <- plotSEM(fit_full)
+# export_graph(graphSEM, height = 700, file_name = "PAPER_FIGS/script_output_figs/other_sems/graphfull.png", file_type = "png") # ou svg
+# 

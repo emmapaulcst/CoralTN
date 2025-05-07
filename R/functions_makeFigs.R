@@ -603,7 +603,7 @@ makeFig3 <- function(bga, flux_per_prey_Ic){
   (all <- ggarrange(pca, box, nrow = 2, ncol = 1, heights = c(1,1), labels = c("A", ""),
                     font.label = list(size = 9, color = "black", face = "bold", family = 'Helvetica')))
   
-  # ggsave(file = "PAPER_FIGS/final_figures/Fig3_PCA_Flux.pdf", dpi = 300, unit = "in", width = 7.25, height = 3.55*3)  #width=10, height=8
+  ggsave(file = "PAPER_FIGS/final_figures/Fig3_PCA_Flux.pdf", dpi = 300, unit = "in", width = 7.25, height = 7.8)  #width=10, height=8
   
   return(all)  
 }
@@ -858,8 +858,8 @@ make_zFig4_SEM <- function(fit_sem){
   
   # export_graph(graphSEM, height = 500, file_name = "PAPER_FIGS/script_output_figs/Fig4/graphSEM_z.png", file_type = "png") # ou svg
   
-  # export_graph(graphSEM, file_name = "PAPER_FIGS/final_figures/Fig4_SEM.pdf", file_type = "pdf", 
-  #              width = 696) # width in pixel, 696 pi = 7.25 inches
+  export_graph(graphSEM, file_name = "PAPER_FIGS/final_figures/Fig4_SEM.pdf", file_type = "pdf",
+               width = 515, height = 175) # width in pixel, 696 pi = 7.25 inches
   
   return(final_graphSEM)  
 }
@@ -903,11 +903,8 @@ make_zFig4_CE <- function(Fig4_CE_data){
       legend.text = element_text(size = 7, family = "Helvetica"),
       axis.text = element_text(size = 7, family = "Helvetica")
     )
-  
-  
-  
+
   ce_fish_grav <- Fig4_CE_data[[1]][["fish.fish_gravity"]]
-  
   (plot_fish_grav <- ggplot(ce_fish_grav, aes(x = gravity, y = estimate__)) +
       geom_ribbon(aes(ymin = lower__, ymax = upper__), fill = "grey80", alpha = 0.5) +
       geom_line(color = "#E9695F", linewidth = 1) +
@@ -916,16 +913,13 @@ make_zFig4_CE <- function(Fig4_CE_data){
   
   
   ce_S_algae <- Fig4_CE_data[[4]][["S.S_algae"]]
-  
   (plot_S_algae <- ggplot(ce_S_algae, aes(x = algae, y = estimate__)) +
       geom_ribbon(aes(ymin = lower__, ymax = upper__), fill = "grey80", alpha = 0.5) +
       geom_line(color = "#74BBCD", linewidth = 1) +
       labs(x = "Algae", y = "S") +
       theme_custom)
   
-  
   ce_sInv_algae <- Fig4_CE_data[[4]][["sInv.sInv_algae"]]
-  
   (plot_sInv_algae <- ggplot(ce_S_algae, aes(x = algae, y = estimate__)) +
       geom_ribbon(aes(ymin = lower__, ymax = upper__), fill = "grey80", alpha = 0.5) +
       geom_line(color = "#E9695F", linewidth = 1) +
@@ -934,7 +928,6 @@ make_zFig4_CE <- function(Fig4_CE_data){
   
   
   ce_mInv_coral <- Fig4_CE_data[[3]][["mInv.mInv_coral"]]
-  
   (plot_mInv_coral <- ggplot(ce_mInv_coral, aes(x = coral, y = estimate__)) +
       geom_ribbon(aes(ymin = lower__, ymax = upper__), fill = "grey80", alpha = 0.5) +
       geom_line(color = "#E9695F", linewidth = 1) +
@@ -943,7 +936,6 @@ make_zFig4_CE <- function(Fig4_CE_data){
   
   
   ce_C_coral <- Fig4_CE_data[[3]][["C.C_coral"]]
-  
   (plot_C_coral <- ggplot(ce_C_coral, aes(x = coral, y = estimate__)) +
       geom_ribbon(aes(ymin = lower__, ymax = upper__), fill = "grey80", alpha = 0.5) +
       geom_line(color = "#74BBCD", linewidth = 1) +
@@ -952,13 +944,11 @@ make_zFig4_CE <- function(Fig4_CE_data){
   
   
   ce_C_npp <- Fig4_CE_data[[2]][["C.C_npp"]]
-  
   (plot_C_npp <- ggplot(ce_C_npp, aes(x = npp, y = estimate__)) +
       geom_ribbon(aes(ymin = lower__, ymax = upper__), fill = "grey80", alpha = 0.5) +
       geom_line(color = "#74BBCD", linewidth = 1) +
       labs(x = "NPP", y = "C") +
       theme_custom)
-  
   
   (CE <- ggarrange(
     plot_S_algae, plot_C_npp, plot_C_coral, plot_fish_grav, plot_mInv_coral, plot_sInv_algae,
@@ -969,34 +959,13 @@ make_zFig4_CE <- function(Fig4_CE_data){
   
     # ggsave('PAPER_FIGS/script_output_figs/Fig4/plotCE_z.png', plot = CE, unit = "px", width = 2000, height = 2000, dpi = 300)
   ggsave('PAPER_FIGS/final_figures/Fig4_CE.pdf', plot = CE, 
-         unit = "in", width = 7.25, height = 7.25, dpi = 300)
+         unit = "in", width = 7.20, height = 5, dpi = 300)
   
   
   # Return the combined grob object
   return(CE)
   
 }
-
-#### combine SEM and CE
-
-# Load necessary libraries
-library(cowplot)
-library(magick)
-library(pdftools)
-
-# Read the PDFs using magick
-CE <- magick::image_read_pdf("~/CoralTN/PAPER_FIGS/final_figures/Fig4_CE.pdf", density = 300)
-SEM <- magick::image_read_pdf("~/CoralTN/PAPER_FIGS/final_figures/Fig4_SEM.pdf", density = 300)
-
-# Convert to ggplot-friendly format
-gA <- ggdraw() + draw_image(plotA)
-gB <- ggdraw() + draw_image(plotB)
-
-# Combine with labels A and B
-combined <- plot_grid(gA, gB, labels = c("A", "B"), ncol = 1)
-
-# Save as PDF
-ggsave("combined_plots.pdf", combined, width = 8, height = 10)
 
 # make_zFig4_CE <- function(Fig4_CE_data){
 #   # cef

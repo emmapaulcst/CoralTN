@@ -145,7 +145,7 @@ make_zSEM <- function(data_sem){
   
   bAut <- bf(bAut ~ 1 + algae + turf + gravity + npp + S + C + zN + zQn + (1|Realm), family = Beta)
   det <- bf(det ~ 1 + algae + turf + gravity + npp + S + C + zN + zQn + (1|Realm), family = Beta)
-  fish <- bf(fish ~ 1 + coral + gravity + S + C + zN + zQn + (1|Realm), family = Beta)
+  fish <- bf(fish ~ 1 + coral + gravity + dhw + S + C + zN + zQn + (1|Realm), family = Beta)
   mInv <- bf(mInv ~ 1 + coral + algae + turf + gravity + S + C  + zN + zQn + (1|Realm), family = Beta)
   sInv <- bf(sInv ~ 1 + coral + algae + turf + gravity + S + C + zN + zQn + (1|Realm), family = Beta)
   zooP <- bf(zooP ~ 1 + coral + npp + gravity + S + C + zN + zQn + (1|Realm), family = Beta)
@@ -193,7 +193,7 @@ make_zSEM_5000 <- function(data_sem){
   
   bAut <- bf(bAut ~ 1 + algae + turf + gravity + npp + S + C + zN + zQn + (1|Realm), family = Beta)
   det <- bf(det ~ 1 + algae + turf + gravity + npp + S + C + zN + zQn + (1|Realm), family = Beta)
-  fish <- bf(fish ~ 1 + coral + gravity + S + C + zN + zQn + (1|Realm), family = Beta)
+  fish <- bf(fish ~ 1 + coral + gravity + dhw + S + C + zN + zQn + (1|Realm), family = Beta)
   mInv <- bf(mInv ~ 1 + coral + algae + turf + gravity + S + C  + zN + zQn + (1|Realm), family = Beta)
   sInv <- bf(sInv ~ 1 + coral + algae + turf + gravity + S + C + zN + zQn + (1|Realm), family = Beta)
   zooP <- bf(zooP ~ 1 + coral + npp + gravity + S + C + zN + zQn + (1|Realm), family = Beta)

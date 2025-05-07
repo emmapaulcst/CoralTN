@@ -21,12 +21,12 @@ tar_source("R/functions_bga.R")
 tar_source("R/functions_flux_per_cat.R")
 tar_source("R/functions_sem.R")
 tar_source("R/functions_sem_zscores.R")
+tar_source("R/functions_otherSEMs.R")
 tar_source("R/functions_makeFigs.R")
-# tar_source("R/functions_make_zFigs.R")
 tar_source("R/functions_makeSupp.R")
-# tar_source("R/functions_make_zSupp.R")
-tar_source("R/find_bug.R")
+tar_source("R/functions_makeSupp_DAGS.R")
 
+# tar_source("R/find_bug.R")
 # tar_source("R/allDuplicated.R")
 # tar_source("R/modularity_beckett.R")
 
@@ -122,27 +122,15 @@ list(
   tar_target(fit_z_sem_5000, make_zSEM_5000(data_z_sem)),
 
   #### MAKE FIGS ####
-  ##### Fig1 ####
-  tar_target(Fig1_data, makeFig1_data()),
-  tar_target(Fig1_graphA, makeGraph(Fig1_data[['graphA']])),
-  tar_target(Fig1_graphB, makeGraph(Fig1_data[['graphB']])),
-  tar_target(Fig1_graphC, makeGraph(Fig1_data[['graphC']])),
-  tar_target(Fig1_graphD, makeGraph(Fig1_data[['graphD']])),
-  tar_target(Fig1_graphE, makeGraph(Fig1_data[['graphE']])),
+  ##### Fig1 M&M on FreeForm ####
 
-  ##### Fig2 ####
+  ##### Fig2 PCA Topo ####
   tar_target(Fig2_z, make_zFig2(bga)),
   
-  # tar_target(Fig2, makeFig2(bga)),
-  # tar_target(Fig2_data, makeFig2_data()),
-  # tar_target(Fig2_graphS, makeGraph(Fig2_data[['graphDiverse']])),
-  # tar_target(Fig2_graphC, makeGraph(Fig2_data[['graphConnected']])),
-  # tar_target(Fig2_graphQ, makeGraph(Fig2_data[['graphModular']])),
-
-  ##### Fig3 ####
+  ##### Fig3 PCA Flux ####
   tar_target(Fig3, makeFig3(bga, flux_per_prey_Ic)),
 
-  ##### Fig 4 ####
+  ##### Fig 4 SEM & CE ####
   
   # tar_target(Fig4_z_sem, make_zFig4_SEM(fit_z_sem)),
   # tar_target(Fig4_z_ce_data, make_zFig4_CE_data(fit_z_sem)),
@@ -151,7 +139,6 @@ list(
   tar_target(Fig4_z_sem_5000, make_zFig4_SEM(fit_z_sem_5000)),
   tar_target(Fig4_z_ce_data_5000, make_zFig4_CE_data(fit_z_sem_5000)),
   tar_target(Fig4_z_ce_5000, make_zFig4_CE(Fig4_z_ce_data_5000)), #use this to plot : grid.draw(tar_read(Fig4_ce))
-  
   
   # tar_target(Fig4_sem, makeFig4_SEM(fit_sem)),
   # tar_target(Fig4_ce_data, makeFig4_CE_data(fit_sem)),
@@ -162,18 +149,26 @@ list(
   # tar_target(Fig4_ce_5000, makeFig4_CE(Fig4_ce_data_5000)), #use this to plot : grid.draw(tar_read(Fig4_ce))
 
   #### MAKE SUPP ####
-  tar_target(Supp2, makeSupp2(bga)),
-  tar_target(Supp3_z, makeSupp3_z(bga)),
-  # tar_target(Supp3, makeSupp3(bga)),
-  tar_target(Supp4_z, makeSupp4_z(bga)),
-  # tar_target(Supp4, makeSupp4(bga)),
-  tar_target(Supp5, plotDAG()),
-  tar_target(Supp6_z, plot_ppchecks_z(fit_z_sem)),
-  # tar_target(Supp6, plot_ppchecks(fit_sem)),
-  tar_target(Supp8_z, makeSupp8_z(bga)),
-  # tar_target(Supp8, makeSupp8(bga)),
-  tar_target(Supp9_z, makeSupp9_z(flux_per_prey_Ic))
-  # tar_target(Supp9, makeSupp9(flux_per_prey_Ic)),
+  # S1 Prey Categories
+  # S2 Map of RLS sites
+  tar_target(map, makeMap(bga)),
+  ##### S3 Network theory ####
+  tar_target(net_theory, makeSuppTN()),
+  ##### S4 DAGS ####
+  tar_target(dags, make_DAGS()),
+  ##### S5 & S6 ppChecks and scattAvg ####
+  tar_target(ppChecks_scattAvg, plot_ppchecks_z(fit_z_sem)),
+  ##### S7 PCA 10% top coral/algae/turf ####
+  tar_target(pca_cat, makePCA_CAT(bga)),
+  ##### S8 Kernell densities of C fluxes ####
+  tar_target(kernell, makeKernell(flux_per_prey_Ic)),
+  ##### S9 PCA All topo metrics ####
+  tar_target(pca_all, makePCA_All(bga)),
+  ##### S10 CorrPlot ####
+  tar_target(corrplot, makeCorrplot(bga)),
+  ##### S11 Full SEM ####
+  tar_target(fit_sem_full, make_zSEM_full(data_z_sem)),
+  tar_target(full_sem, plot_fullSEM(fit_sem_full))
   
 )
 
