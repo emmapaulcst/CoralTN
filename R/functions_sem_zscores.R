@@ -69,13 +69,8 @@ gives_zdata_SEM <- function(bga, flux_per_prey_Ic, z_scores){
       # nBc = (log(nBc+1) - mean(log(nBc+1))) / sd(log(nBc+1)),
       # N = (log(N+1) - mean(log(N+1))) / sd(log(N+1)),
       # Qn = (log(Qn+1) - mean(log(Qn+1))) / sd(log(Qn+1)),
-      
-      # S = (S - mean(S)) / sd(S),
-      # C = (C - mean(C)) / sd(C),
-      
       zN = ((zN) - mean(zN)) / sd(zN),
       zQn = ((zQn) - mean(zQn)) / sd(zQn),
-      
       # L = (log(L+1) - mean(log(L+1))) / sd(log(L+1)),
       # G = (log(G+1) - mean(log(G+1))) / sd(log(G+1)),
       # V = (log(V+1) - mean(log(V+1))) / sd(log(V+1)),
@@ -121,7 +116,7 @@ gives_zdata_SEM <- function(bga, flux_per_prey_Ic, z_scores){
 
 # data_sem <- data
 
-tar_load(data_z_sem)
+# tar_load(data_z_sem)
 # data_sem <- data_z_sem
 
 make_zSEM <- function(data_sem){
@@ -183,17 +178,17 @@ make_zSEM_5000 <- function(data_sem){
   
   ##### topo | layer 3 ####
   
-  s <- bf(S ~ 1 + coral + algae + turf + npp + gravity + sst + (1|Realm))
-  c <- bf(C ~ 1 + coral + algae + turf + npp + gravity + sst + (1|Realm))
+  s <- bf(S ~ 1 + coral + algae + turf + npp + gravity + sst + dhw + (1|Realm))
+  c <- bf(C ~ 1 + coral + algae + turf + npp + gravity + sst + dhw + (1|Realm))
   
-  zn <- bf(zN ~ 1 + coral + algae + turf + npp + gravity + sst + (1|Realm))
-  zq <- bf(zQn ~ 1 + coral + algae + turf + npp + gravity + sst + (1|Realm))
+  zn <- bf(zN ~ 1 + coral + algae + turf + npp + gravity + sst + dhw + (1|Realm))
+  zq <- bf(zQn ~ 1 + coral + algae + turf + npp + gravity + sst + dhw + (1|Realm))
   
   ##### fluxes | layer 4 ####
   
   bAut <- bf(bAut ~ 1 + algae + turf + gravity + npp + S + C + zN + zQn + (1|Realm), family = Beta)
   det <- bf(det ~ 1 + algae + turf + gravity + npp + S + C + zN + zQn + (1|Realm), family = Beta)
-  fish <- bf(fish ~ 1 + coral + gravity + dhw + S + C + zN + zQn + (1|Realm), family = Beta)
+  fish <- bf(fish ~ 1 + coral + gravity + S + C + zN + zQn + (1|Realm), family = Beta)
   mInv <- bf(mInv ~ 1 + coral + algae + turf + gravity + S + C  + zN + zQn + (1|Realm), family = Beta)
   sInv <- bf(sInv ~ 1 + coral + algae + turf + gravity + S + C + zN + zQn + (1|Realm), family = Beta)
   zooP <- bf(zooP ~ 1 + coral + npp + gravity + S + C + zN + zQn + (1|Realm), family = Beta)
@@ -221,151 +216,7 @@ make_zSEM_5000 <- function(data_sem){
 ##### analysis ####
 
 # tar_load(fit_z_sem_5000)
-
-
 # loo(fit_sem)
-# 
 # bayes_R2(fit_z_sem_5000)
-# 
 # summary(fit_z_sem_5000)
-
 # conditional_effects(fit_z_sem_5000)
-
-
-##### conditional_effects ####
-
-# tar_load(fit_z_sem_5000)
-# fit_z_sem_5000
-# 
-# plot(fit_z_sem_5000)
-# 
-# resp <- c("coral", "turf", "algae",
-#           "S", "C", "zN", "zQn",
-#           "bAut", "det", "zooP", "sessbInv", "mobInv", "fish" )
-# # desn_overlay
-# 
-# for (i in 1:length(resp)){
-#   ppCheck_plot <- pp_check(fit_final, resp = as.character(resp[i]), type = "dens_overlay")
-#   ggsave(ppCheck_plot, filename = paste("makeFigures/Supp/ppCheck/ppCheck_DensOverlay_", as.character(resp[i]),".png", sep=""),
-#          dpi = 150, unit = "px", width = 1000, height = 500)
-# }
-# 
-# 
-# #scatter average
-# for (i in 1:length(resp)){
-#   ppCheck_plot <- pp_check(fit_final, resp = as.character(resp[i]), type = "scatter_avg")
-#   ggsave(ppCheck_plot, filename = paste("makeFigures/Supp/ppCheck/ppCheck_ScatterAvg_", as.character(resp[i]),".png", sep=""),
-#          dpi = 150, unit = "px", width = 1000, height = 500)
-# }
-# 
-# #conditions = data.frame(Realm = c("Central Indo-Pacific", "Eastern Indo-Pacific", "Tropical Atlantic", "Tropical Eastern Pacific", "Western Indo-Pacific"))
-# 
-# cef_grav <- conditional_effects(fit_z_sem_5000,
-#                                 #conditions = conditions,
-#                                 effects = c("gravity"))
-# cef_coral <- conditional_effects(fit_z_sem_5000,
-#                                  #conditions = conditions,
-#                                  effects = c("coral"))
-# 
-# 
-# 
-# cef_connectance <- conditional_effects(fit_z_sem_5000,
-#                                  #conditions = conditions,
-#                                  effects = c("C"))
-# 
-# cef_modularity <- conditional_effects(fit_z_sem_5000,
-#                                  #conditions = conditions,
-#                                  effects = c("zQn"))
-# 
-# cef_nestedness <- conditional_effects(fit_z_sem_5000,
-#                                  #conditions = conditions,
-#                                  effects = c("zN"))
-# # Row bind the data.
-# # This object is a dataframe of the conditional effect estimates
-# # for admixed and unadmixed for each trait.
-# 
-# (plot_fish_grav <- plot(cef_grav,
-#                         points = getOption("brms.plot_points", TRUE),
-#                         #rug = T,
-#                         re_formula = NULL,
-#                         point_args = list(
-#                           color = "grey80",
-#                           alpha = 0.5),
-#                         line_args = list(color = "#E68613"),
-#                         theme = theme_minimal(),
-#                         ask = F) [[3]] +
-#     labs(x = "Gravity",
-#          y = "fish"))
-# 
-# (plot_mInv_grav <- plot(cef_grav,
-#                         points = getOption("brms.plot_points", TRUE),
-#                         #rug = T,
-#                         re_formula = NULL,
-#                         point_args = list(
-#                           color = "grey80",
-#                           alpha = 0.5),
-#                         line_args = list(color = "#E68613"),
-#                         theme = theme_minimal(),
-#                         ask = F) [[4]] +
-#     labs(x = "Gravity",
-#          y = "mInv"))
-# 
-# (plot_zooP_grav <- plot(cef_grav,
-#                         points = getOption("brms.plot_points", TRUE),
-#                         #rug = T,
-#                         re_formula = NULL,
-#                         point_args = list(
-#                           color = "grey80",
-#                           alpha = 0.5),
-#                         line_args = list(color = "#E68613"),
-#                         theme = theme_minimal(),
-#                         ask = F) [[6]] +
-#     labs(x = "Gravity",
-#          y = "zooP"))
-# 
-# (plot_S_algae <- plot(cef_algae,
-#                       points = getOption("brms.plot_points", TRUE),
-#                       #rug = T,
-#                       re_formula = NULL,
-#                       point_args = list(
-#                         color = "grey80",
-#                         alpha = 0.5),
-#                       line_args = list(color = "#ABA300"),
-#                       theme = theme_minimal(),
-#                       ask = F) [[7]] +
-#     labs(x = "Algae",
-#          y = "S"))
-# 
-# (plot_mInv_coral <- plot(cef_coral,
-#                          points = getOption("brms.plot_points", TRUE),
-#                          #rug = T,
-#                          re_formula = NULL,
-#                          point_args = list(
-#                            color = "grey80",
-#                            alpha = 0.5),
-#                          line_args = list(color = "#ABA300"),
-#                          theme = theme_minimal(),
-#                          ask = F) [[4]] +
-#     labs(x = "Coral",
-#          y = "mInv"))
-# 
-# (plot_zooP_coral <- plot(cef_coral,
-#                          points = getOption("brms.plot_points", TRUE),
-#                          #rug = T,
-#                          re_formula = NULL,
-#                          point_args = list(
-#                            color = "grey80",
-#                            alpha = 0.5),
-#                          line_args = list(color = "#ABA300"),
-#                          theme = theme_minimal(),
-#                          ask = F) [[6]] +
-#     labs(x = "Coral",
-#          y = "zooP"))
-# 
-# grid.newpage()
-# grid.draw(cbind(rbind(ggplotGrob(plot_fish_grav), ggplotGrob(plot_mInv_grav), ggplotGrob(plot_zooP_grav)),
-#                 rbind(ggplotGrob(plot_S_algae), ggplotGrob(plot_mInv_coral), ggplotGrob(plot_zooP_coral))))
-# 
-# 
-
-

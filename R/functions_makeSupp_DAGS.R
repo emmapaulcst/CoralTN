@@ -219,9 +219,9 @@ make_DAGS <- function(){
     rep(1, 9))
   
   .archi <- cbind(
-    c(rep("Node number", 6), rep("Connectance", 6), rep("Nestedness", 6), rep("Modularity", 6)),
-    c(rep(c("Net Primary Production", "Gravity", "Sea Surface Temperature", "Coral", "Algae", "Turf"), 4)),
-    rep(1, 24))
+    c(rep("Node number", 7), rep("Connectance", 7), rep("Nestedness", 7), rep("Modularity", 7)),
+    c(rep(c("Net Primary Production", "Gravity", "Sea Surface Temperature", "Degree Heating Weeks", "Coral", "Algae", "Turf"), 4)),
+    rep(1, 28))
   
   edge <- as.data.frame(rbind(.benthos, .archi)) %>% 
     rename(var = V1, dep = V2, weight = V3)
@@ -393,7 +393,7 @@ make_DAGS <- function(){
     rbind("Benthic autotrophs", "Detritus", "Fish", "Mobile invertebrates", "Sessile invertebrates", "Zooplankton",
           "Node number", "Connectance", "Nestedness", "Modularity", 
           "Coral", "Algae", "Turf",
-          "Gravity",  "Degree Heating Weeks", "Net Primary Production")) %>% # , "Sea Surface Temperature")) %>% 
+          "Gravity", "Net Primary Production")) %>% #"Degree Heating Weeks", "Sea Surface Temperature")) %>% 
     rename(label = V1)
   
   node <- node %>% 
@@ -401,14 +401,14 @@ make_DAGS <- function(){
                           levels = c("Node number", "Connectance", "Nestedness", "Modularity", 
                                      "Benthic autotrophs", "Detritus", "Fish", "Mobile invertebrates", "Sessile invertebrates", "Zooplankton",
                                      "Coral", "Algae", "Turf",
-                                     "Gravity", "Degree Heating Weeks", "Net Primary Production"))) %>% #"Sea Surface Temperature", 
+                                     "Gravity", "Net Primary Production"))) %>% #"Degree Heating Weeks", "Sea Surface Temperature", 
     mutate(type = case_when(
-      label == "Net Primary Production" | label == "Degree Heating Weeks" | label == "Gravity" ~ 1, # label == "Sea Surface Temperature" | 
+      label == "Net Primary Production" |  label == "Gravity" ~ 1, # label == "Degree Heating Weeks" | label == "Sea Surface Temperature" | 
       label == "Coral" | label == "Algae" | label == "Turf" ~ 2,
       label == "Node number" | label == "Connectance" | label == "Nestedness" | label == "Modularity" ~ 3,
       label == "Benthic autotrophs" | label == "Detritus" | label == "Fish" | label == "Mobile invertebrates" | label == "Sessile invertebrates" | label == "Zooplankton" ~ 4)) %>%
     arrange(type) %>% 
-    mutate(id = seq(1:16)) %>%
+    mutate(id = seq(1:15)) %>%
     select(id, label)
   
   #Prepare label sizes
@@ -441,9 +441,9 @@ make_DAGS <- function(){
         rep(1, 8)),
       
       .fish <- cbind(
-        rep("Fish", 7),
-        c("Coral", "Gravity", "Node number", "Degree Heating Weeks", "Connectance", "Nestedness", "Modularity"),
-        rep(1, 7)),
+        rep("Fish", 6),
+        c("Coral", "Gravity", "Node number", "Connectance", "Nestedness", "Modularity"),
+        rep(1, 6)),
       
       .mInv <- cbind(
         rep("Mobile invertebrates", 8),
@@ -472,7 +472,7 @@ make_DAGS <- function(){
       mutate(dep = factor(edge$dep, 
                           levels = c("Node number", "Connectance", "Nestedness", "Modularity", 
                                      "Coral", "Algae", "Turf",
-                                     "Gravity", "Degree Heating Weeks", "Net Primary Production"))) %>% #"Sea Surface Temperature", 
+                                     "Gravity",  "Net Primary Production"))) %>% #"Degree Heating Weeks", "Sea Surface Temperature", 
       mutate(weight = as.numeric(weight)) %>% 
       rename(from = dep, to = var)
     
@@ -490,7 +490,7 @@ make_DAGS <- function(){
         (to_label == "Benthic autotrophs" | to_label == "Fish" | to_label == "Detritus" | to_label == "Zooplankton" |
            to_label == "Sessile invertebrates" | to_label == "Mobile invertebrates")
         &
-          (from_label == "Net Primary Production"| from_label == "Degree Heating Weeks" | from_label == "Gravity") ~ TRUE, #from_label == "Sea Surface Temperature"|  
+          (from_label == "Net Primary Production"| from_label == "Gravity") ~ TRUE, #from_label == "Degree Heating Weeks" | from_label == "Sea Surface Temperature"|  
         TRUE ~ FALSE))
     
     edge <- edge %>% 
@@ -537,57 +537,57 @@ make_DAGS <- function(){
     set_node_attrs(
       node_attr = fillcolor,
       values = "#CC4411", 
-      nodes = c(1:3)) %>%
+      nodes = c(1:2)) %>%
     set_node_attrs(
       node_attr = color,
       values = "#CC4411",
-      nodes = c(1:3)) %>%
+      nodes = c(1:2)) %>%
     set_node_attrs(
       node_attr = rank,
       values = 1,
-      nodes = c(1:3)) %>%
+      nodes = c(1:2)) %>%
     
     # BENTHOS
     set_node_attrs(
       node_attr = fillcolor,
       values =  "#EEBB44",
-      nodes = c(4:6)) %>%
+      nodes = c(3:5)) %>%
     set_node_attrs(
       node_attr = color,
       values =  "#EEBB44",
-      nodes = c(4:6)) %>%
+      nodes = c(3:5)) %>%
     set_node_attrs(
       node_attr = rank,
       values =  2,
-      nodes =  c(4:6)) %>%
+      nodes =  c(3:5)) %>%
     
     # ARCHI S C N Qn
     set_node_attrs(
       node_attr = fillcolor,
       values =  "#74BBCD",
-      nodes = c(7:10)) %>%
+      nodes = c(6:9)) %>%
     set_node_attrs(
       node_attr = color,
       values =  "#74BBCD",
-      nodes = c(7:10)) %>%
+      nodes = c(6:9)) %>%
     set_node_attrs(
       node_attr = rank,
       values =  3,
-      nodes =  c(7:10)) %>%
+      nodes =  c(6:9)) %>%
     
     #FLUX
     set_node_attrs(
       node_attr = fillcolor,
       values =  "#E9695F",
-      nodes = c(11:16)) %>%
+      nodes = c(10:15)) %>%
     set_node_attrs(
       node_attr = color,
       values =  "#E9695F",
-      nodes = c(11:16)) %>%
+      nodes = c(10:15)) %>%
     set_node_attrs(
       node_attr = rank,
       values =  4,
-      nodes =  c(11:16))
+      nodes =  c(10:15))
   
   graph2 <- graph1 %>%
     add_edges_from_table(

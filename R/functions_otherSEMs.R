@@ -1,7 +1,8 @@
+# library(brms)
+# library(dplyr)
+
 # tar_load(data_z_sem)
 # data_sem <- data_z_sem
-library(brms)
-library(dplyr)
 
 make_zSEM_full <- function(data_sem){
   #### SEM ####
@@ -16,7 +17,6 @@ make_zSEM_full <- function(data_sem){
   
   s <- brms::bf(S ~ 1 + coral + algae + turf + npp + gravity + dhw + sst + (1|Realm))
   c <- brms::bf(C ~ 1 + coral + algae + turf + npp + gravity + dhw + sst + (1|Realm))
-  
   zn <- brms::bf(zN ~ 1 + coral + algae + turf + npp + gravity + dhw + sst + (1|Realm))
   zq <- brms::bf(zQn ~ 1 + coral + algae + turf + npp + gravity + dhw + sst + (1|Realm))
   
@@ -49,48 +49,31 @@ make_zSEM_full <- function(data_sem){
   return(fit_z_sem)
 }
 
-# fit_sem <- fit_full
 
 plot_fullSEM <- function(fit_sem){
   
   ##### Fe ####
   
-  fe <- brms::fixef(fit_sem) %>% # mettre cette partie dans un .csv plutôt
+  fe <- brms::fixef(fit_sem) %>%
     as.data.frame() %>%
     tibble::rownames_to_column("name") %>%
     tidyr::separate(name, into = c("dep", "var"), sep = "_") %>%
     dplyr::filter(var != "Intercept") %>% 
-    # mutate(dep = case_when(
-    #   dep == "coral" ~ "Coral",
-    #   dep == "algae" ~ "Algae",
-    #   dep == "turf" ~ "Turf",
-    #   dep == "mobInv" ~ "mInv",
-    #   dep == "sessbInv" ~ "sInv",
-    #   TRUE ~ dep)) %>%
-    # mutate(var = case_when(
-    #   var == "algae" ~ "Algae",
-    #   var == "coral" ~ "Coral",
-    #   var == "gravity" ~ "Grav.",
-  #   var == "sst" ~ "SST",
-  #   var == "turf" ~ "Turf",
-  #   var == "npp" ~ "NPP",
-  #   var == "dhw" ~ "DHW",
-  #   TRUE ~ var))
-  dplyr::mutate(dep = case_when(
-    dep == "coral" ~ "Coral",
-    dep == "algae" ~ "Algae",
-    dep == "turf" ~ "Turf",
-    dep == "S" ~ "Node number",
-    dep == "C" ~ "Connectance",
-    dep == "zQn" ~ "Modularity",
-    dep == "zN" ~ "Nestedness",
-    dep == "mInv" ~ "Mobile invertebrates",
-    dep == "sInv" ~ "Sessile invertebrates",
-    dep == "bAut" ~ "Benthic autotrophs",
-    dep == "det" ~ "Detritus",
-    dep == "fish" ~ "Fish",
-    dep == "zooP" ~ "Zooplankton",
-    TRUE ~ dep)) %>% 
+    dplyr::mutate(dep = case_when(
+      dep == "coral" ~ "Coral",
+      dep == "algae" ~ "Algae",
+      dep == "turf" ~ "Turf",
+      dep == "S" ~ "Node number",
+      dep == "C" ~ "Connectance",
+      dep == "zQn" ~ "Modularity",
+      dep == "zN" ~ "Nestedness",
+      dep == "mInv" ~ "Mobile invertebrates",
+      dep == "sInv" ~ "Sessile invertebrates",
+      dep == "bAut" ~ "Benthic autotrophs",
+      dep == "det" ~ "Detritus",
+      dep == "fish" ~ "Fish",
+      dep == "zooP" ~ "Zooplankton",
+      TRUE ~ dep)) %>% 
     dplyr::mutate(var = case_when(
       var == "coral" ~ "Coral",
       var == "algae" ~ "Algae",
@@ -105,13 +88,6 @@ plot_fullSEM <- function(fit_sem){
       var == "zN" ~ "Nestedness",
       TRUE ~ var)) 
   
-  # fe$dep <- factor(fe$dep, levels = c("S", "C", "Cc", "nCc", "Bc", "nBc", "N", "Qn", 
-  #                                     "bAut", "det", "fish", "mInv", "sInv", "zooP",
-  #                                     "Coral", "Algae", "Turf")) 
-  # fe$var <- factor(fe$var, levels = c("S", "C", "Cc", "nCc", "Bc", "nBc", "N", "Qn", 
-  #                                     "Grav.", "NPP", "SST", "Turf", "Algae", "Coral",
-  #                                     "DHW"))
-  
   fe$dep <- factor(fe$dep, levels = c("Node number", "Connectance",  "Nestedness", "Modularity", 
                                       "Benthic autotrophs", "Detritus", "Fish", "Mobile invertebrates", "Sessile invertebrates", "Zooplankton",
                                       "Coral", "Algae", "Turf")) 
@@ -120,18 +96,6 @@ plot_fullSEM <- function(fit_sem){
                                       "Turf", "Algae", "Coral"))
   
   ##### Nodes ####
-  
-  # node <- rbind(fe %>% select(var) %>% rename(label = var), 
-  #               fe %>% select(dep) %>% rename(label = dep)) %>% 
-  #   group_by(label) %>% summarise() %>%
-  #   mutate(type = case_when(
-  #     label == "DHW" | label == "SST" | label == "NPP" | label == "Grav." ~ 1,
-  #     label == "Coral" | label == "Algae" | label == "Turf" ~ 2,
-  #     label == "S" | label == "C" | label == "N" | label == "Qn" ~ 3,
-  #     label == "bAut" | label == "det" | label == "fish" | label == "mInv" | label == "sInv" | label == "zooP" ~ 4)) %>%
-  #   arrange(type) %>% 
-  #   mutate(id = seq(1:17)) %>% #1:18
-  #   select(id, label)
   
   node <- rbind(fe %>% select(var) %>% rename(label = var), 
                 fe %>% select(dep) %>% rename(label = dep)) %>% 
@@ -143,7 +107,7 @@ plot_fullSEM <- function(fit_sem){
       label == "Benthic autotrophs" | label == "Detritus" | label == "Fish" | 
         label == "Mobile invertebrates" | label == "Sessile invertebrates" | label == "Zooplankton" ~ 4)) %>%
     arrange(type) %>% 
-    mutate(id = seq(1:17)) %>% #1:18
+    mutate(id = seq(1:17)) %>%
     select(id, label)
   
   #Prepare label sizes
@@ -296,10 +260,3 @@ plot_fullSEM <- function(fit_sem){
   
   return(graphSEM)  
 }
-
-# tar_load(data_z_sem)
-# 
-# fit_full <- make_zSEM_full(data_z_sem)
-# graphSEM <- plotSEM(fit_full)
-# export_graph(graphSEM, height = 700, file_name = "PAPER_FIGS/script_output_figs/other_sems/graphfull.png", file_type = "png") # ou svg
-# 

@@ -26,10 +26,6 @@ tar_source("R/functions_makeFigs.R")
 tar_source("R/functions_makeSupp.R")
 tar_source("R/functions_makeSupp_DAGS.R")
 
-# tar_source("R/find_bug.R")
-# tar_source("R/allDuplicated.R")
-# tar_source("R/modularity_beckett.R")
-
 list(
   #### BUILD INT MATRICES ####
   # Get global interaction matrix from ML
@@ -38,10 +34,6 @@ list(
   
   # Get reef fish visual censuses from RLS
   tar_target(path_to_fish_rls, "data/rls_fish_flux.csv", format = "file"),
-  
-  # Old fish
-  # tar_target(path_to_fish_rls, "find_bug/rls_fish_99_flux_turf_no_duplicate.csv", format = "file"),
-  
   tar_target(fish_rls, get_fish_rls(path_to_fish_rls)),
   
   # Save selected SurveyID
@@ -60,20 +52,12 @@ list(
   # Rmv empty columns to be sure
   tar_target(list_mat_int_Ic, gives_list_mat_int_rmv(site, list_mat_int_rmv_w)),
   
-  # Old list mat int
-  # tar_target(path_to_old_list_mat_int, "find_bug/list_mat_int_cut-off_rescaled_turf_Ic.rdata", format = "file"),
-  # tar_target(list_mat_int_Ic_old, get_old_list_mat_int(path_to_old_list_mat_int))
-  
   #### ASSESS TOPOLOGY ####
-  # tar_target(path_to_mat_int, "data/list_mat_int_Ic.rdata", format = "file"),
-  # tar_target(mat_int, get_mat_int(path_to_mat_int)),
+  # It is recommended to use the topology.csv dataset here, to avoid lengthy computational time
+  # tar_target(topology, get_all_topo(list_mat_int_Ic, surveyID)),
   
-  # NEVER EVER EVEEEER SUPRESS TOPOLOGY #
-  tar_target(topology, get_all_topo(list_mat_int_Ic, surveyID)),
-  
-  # Old topo
-  # tar_target(path_to_topo, "find_bug/archi_Ic_cut-off_rescaled_turf_Cc_bis.csv", format = "file"),
-  # tar_target(topology, get_old_topo(path_to_topo))
+  tar_target(path_to_topology, "data/topology.csv", format = "file"),
+  tar_target(topology, read_topology(path_to_topology)),
 
   #### BUILD BGA DATASET ####
   # Get benthos data
@@ -85,11 +69,10 @@ list(
   tar_target(predictors, get_predictors(path_to_predictors, surveyID)),
 
   # get z-scores
+  # The code for z-scores can be found in R/zcores.R script
+  # Note that computation is lenghty and requires a server
   tar_target(path_to_z_scores, "data/z_scores.csv", format = "file"),
   tar_target(z_scores, get_z_scores(path_to_z_scores)),
-
-  # tar_target(path_to_mat_int, "data/list_mat_int_Ic.rdata", format = "file"),
-  # tar_target(mat_int, get_mat_int(path_to_mat_int)),
 
   # Gives bga dataset
   tar_target(bga, gives_bga_dataset(topology, z_scores, benthos, predictors)),
@@ -105,24 +88,17 @@ list(
   # tar_target(info_on_fluxes, get_info_on_fluxes(flux_per_prey_Ic))
 
   #### SEM ####
-  # tar_target(data_sem, gives_data_SEM(bga, flux_per_prey_Ic)),
-
-  # Old data for sem
-  # tar_target(path_to_data, "find_bug/data.csv", format = "file"),
-  # tar_target(data, get_data(path_to_data)),
-
-  # tar_target(fit_sem, make_SEM(data_sem)),
-  # tar_target(fit_sem_5000, make_SEM_5000(data_sem)),
-  
   # Zscore sem
   tar_target(data_z_sem, gives_zdata_SEM(bga, flux_per_prey_Ic)),
-  # petit sem
-  tar_target(fit_z_sem, make_zSEM(data_z_sem)),
-  # big 5000 sem
+
+  # Structural Equation Model
   tar_target(fit_z_sem_5000, make_zSEM_5000(data_z_sem)),
+  
+  # smaller, quicker sem for an overview
+  # tar_target(fit_z_sem, make_zSEM(data_z_sem)),
 
   #### MAKE FIGS ####
-  ##### Fig1 M&M on FreeForm ####
+  ##### Fig1 M&M by hand ####
 
   ##### Fig2 PCA Topo ####
   tar_target(Fig2_z, make_zFig2(bga)),
@@ -132,44 +108,41 @@ list(
 
   ##### Fig 4 SEM & CE ####
   
-  # tar_target(Fig4_z_sem, make_zFig4_SEM(fit_z_sem)),
-  # tar_target(Fig4_z_ce_data, make_zFig4_CE_data(fit_z_sem)),
-  # tar_target(Fig4_z_ce, make_zFig4_CE(Fig4_z_ce_data)), #use this to plot : grid.draw(tar_read(Fig4_ce))
   
   tar_target(Fig4_z_sem_5000, make_zFig4_SEM(fit_z_sem_5000)),
   tar_target(Fig4_z_ce_data_5000, make_zFig4_CE_data(fit_z_sem_5000)),
-  tar_target(Fig4_z_ce_5000, make_zFig4_CE(Fig4_z_ce_data_5000)), #use this to plot : grid.draw(tar_read(Fig4_ce))
-  
-  # tar_target(Fig4_sem, makeFig4_SEM(fit_sem)),
-  # tar_target(Fig4_ce_data, makeFig4_CE_data(fit_sem)),
-  # tar_target(Fig4_ce, makeFig4_CE(Fig4_ce_data)), #use this to plot : grid.draw(tar_read(Fig4_ce))
-
-  # tar_target(Fig4_sem_5000, makeFig4_SEM(fit_sem_5000)),
-  # tar_target(Fig4_ce_data_5000, makeFig4_CE_data(fit_sem_5000)),
-  # tar_target(Fig4_ce_5000, makeFig4_CE(Fig4_ce_data_5000)), #use this to plot : grid.draw(tar_read(Fig4_ce))
+  tar_target(Fig4_z_ce_5000, make_zFig4_CE(Fig4_z_ce_data_5000)),
 
   #### MAKE SUPP ####
-  # S1 Prey Categories
-  # S2 Map of RLS sites
+  ##### S1 Prey Categories by hand ####
+  
+  ##### S2 Map of RLS sites ####
   tar_target(map, makeMap(bga)),
+  
   ##### S3 Network theory ####
   tar_target(net_theory, makeSuppTN()),
+  
   ##### S4 DAGS ####
   tar_target(dags, make_DAGS()),
+  
   ##### S5 & S6 ppChecks and scattAvg ####
   tar_target(ppChecks_scattAvg, plot_ppchecks_z(fit_z_sem)),
+  
   ##### S7 PCA 10% top coral/algae/turf ####
   tar_target(pca_cat, makePCA_CAT(bga)),
+  
   ##### S8 Kernell densities of C fluxes ####
   tar_target(kernell, makeKernell(flux_per_prey_Ic)),
+  
   ##### S9 PCA All topo metrics ####
   tar_target(pca_all, makePCA_All(bga)),
+  
   ##### S10 CorrPlot ####
   tar_target(corrplot, makeCorrplot(bga)),
+  
   ##### S11 Full SEM ####
   tar_target(fit_sem_full, make_zSEM_full(data_z_sem)),
   tar_target(full_sem, plot_fullSEM(fit_sem_full))
-  
 )
 
 

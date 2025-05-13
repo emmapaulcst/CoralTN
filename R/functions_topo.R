@@ -1,10 +1,18 @@
 #### READ MATRICES ####
+
 # get_mat_int <- function(path){
 #   mat_int <- load(path) 
 #   mat_int <- get(mat_int)
 #   #mat_int <- as.data.frame(mat_int[[1]])
 #   return(mat_int)
 # }
+
+read_topology <- function(path){
+  
+  topology <- read_csv(path_to_topology)
+  
+  return(topology)
+}
 
 #### TOPO FUNCTIONS ####
 network_complexity <- function(tibble){
